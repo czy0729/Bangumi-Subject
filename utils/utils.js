@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:18
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-14 20:56:26
+ * @Last Modified time: 2020-01-14 23:58:49
  */
 const cheerioRN = require("cheerio-without-node-native");
 
@@ -63,10 +63,15 @@ async function queue(fetchs, num = 2) {
   return true;
 }
 
+function safeStringify(data) {
+  return JSON.stringify(data).replace(/:null/g, ':""');
+}
+
 module.exports = {
   safeObject,
   getCoverMedium,
   removeCF,
   cheerio,
-  queue
+  queue,
+  safeStringify
 };

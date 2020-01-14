@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:54
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-14 20:58:16
+ * @Last Modified time: 2020-01-15 00:06:59
  */
 const utils = require("./utils");
 const match = require("./match");
@@ -137,7 +137,7 @@ function cheerioSubjectFormHTML(HTML) {
   if (disc.length) subject.disc = disc;
   if (comic.length) subject.comic = comic;
   if (like.length) subject.like = like;
-  if (who.length) subject.who = who;
+  // if (who.length) subject.who = who;
   if (info) subject.info = decoder.decoder(info);
   if (lock) subject.lock = lock;
 
