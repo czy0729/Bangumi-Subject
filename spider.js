@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-15 11:30:29
+ * @Last Modified time: 2020-01-15 14:27:22
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -20,6 +20,12 @@ const ids = JSON.parse(fs.readFileSync('./ids/anime-rank.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
+    const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
+    if (fs.existsSync(filePath)) {
+      // console.log(`- skip ${id}.json [${index} / ${ids.length}]`)
+      return resolve(true)
+    }
+
     const { data: apiDS } = await axios({
       url: `https://api.bgm.tv/subject/${id}?responseGroup=large`
     })
@@ -82,7 +88,6 @@ function fetchSubject(id, index) {
 
     data._loaded = utils.getTimestamp()
 
-    const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
     const dirPath = path.dirname(filePath)
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath)
@@ -91,9 +96,9 @@ function fetchSubject(id, index) {
     console.log(`- writing ${id}.json [${index} / ${ids.length}]`)
     fs.writeFileSync(filePath, utils.safeStringify(data))
 
-    resolve(true)
+    return resolve(true)
   })
 }
 
 const fetchs = ids.map((id, index) => () => fetchSubject(id, index))
-utils.queue(fetchs, 4)
+utils.queue(fetchs, 2)
