@@ -3,16 +3,18 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-16 11:44:37
+ * @Last Modified time: 2020-01-16 12:20:46
  */
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
+const bangumiData = require('bangumi-data')
 const cheerio = require('./utils/cheerio')
 const utils = require('./utils/utils')
 
 /**
  * 动画 (当前排行榜有234页有效数据)
+ * bangumi-data的条目id
  * https://bgm.tv/anime/browser/airtime/2020?page=10
  * https://bgm.tv/anime/browser?sort=rank&page=234
  *
@@ -33,6 +35,17 @@ const utils = require('./utils/utils')
   const data = []
 
   /**
+   * bangumi-data
+   */
+  bangumiData.items.forEach(item => {
+    const find = item.sites.find(i => i.site === 'bangumi')
+    if (find) {
+      data.push(parseInt(find.id))
+    }
+  })
+  const filePath = './ids/anime-bangumi-data.json'
+
+  /**
    * anime 2020
    */
   // for (let page = 1; page < 12; page++) {
@@ -49,16 +62,16 @@ const utils = require('./utils/utils')
   /**
    * anime rank page 1-234
    */
-  for (let page = 1; page < 235; page++) {
-    const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url
-    })
+  // for (let page = 1; page < 235; page++) {
+  //   const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  const filePath = './ids/anime-rank.json'
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/anime-rank.json'
 
   /**
    * book rank page 1-146
@@ -115,7 +128,6 @@ const utils = require('./utils/utils')
   //   data.push(...cheerio.cheerioIds(indexHTML))
   // }
   // const filePath = './ids/real-rank.json'
-
 
   /**
    * start

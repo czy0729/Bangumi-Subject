@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "axios": "^0.19.1",
+    "bangumi-data": "^0.3.11",
     "cheerio-without-node-native": "0.20.2"
   }
 }
