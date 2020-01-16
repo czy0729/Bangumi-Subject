@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-15 14:42:00
+ * @Last Modified time: 2020-01-15 18:13:32
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -32,9 +32,9 @@ const utils = require('./utils/utils')
 ;(async () => {
   const data = []
 
-  // /**
-  //  * anime 2020
-  //  */
+  /**
+   * anime 2020
+   */
   // for (let page = 1; page < 12; page++) {
   //   console.log(
   //     `- fetching ${`https://bgm.tv/anime/browser/airtime/2020?page=${page}`}`
@@ -46,9 +46,9 @@ const utils = require('./utils/utils')
   // }
   // const filePath = './ids/anime-2020.json'
 
-  // /**
-  //  * anime rank page 1-234
-  //  */
+  /**
+   * anime rank page 1-234
+   */
   // for (let page = 1; page < 235; page++) {
   //   const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
@@ -63,8 +63,50 @@ const utils = require('./utils/utils')
   /**
    * book rank page 1-146
    */
-  for (let page = 1; page < 147; page++) {
-    const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
+  // for (let page = 1; page < 147; page++) {
+  //   const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url
+  //   })
+
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/book-rank.json'
+
+  /**
+   * music rank page 1-155
+   */
+  // for (let page = 1; page < 156; page++) {
+  //   const url = `https://bgm.tv/music/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url
+  //   })
+
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/music-rank.json'
+
+  /**
+   * game rank page 1-192
+   */
+  // for (let page = 1; page < 193; page++) {
+  //   const url = `https://bgm.tv/game/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url
+  //   })
+
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/game-rank.json'
+
+  /**
+   * real rank page 1-80
+   */
+  for (let page = 1; page < 81; page++) {
+    const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
     const { data: indexHTML } = await axios({
       url
     })
@@ -72,7 +114,8 @@ const utils = require('./utils/utils')
     console.log(`- fetching ${url}`)
     data.push(...cheerio.cheerioIds(indexHTML))
   }
-  const filePath = './ids/book-rank.json'
+  const filePath = './ids/real-rank.json'
+
 
   /**
    * start

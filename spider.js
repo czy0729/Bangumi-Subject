@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-15 14:27:22
+ * @Last Modified time: 2020-01-15 22:17:38
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -16,7 +16,7 @@ const headers = {
   'User-Agent':
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36'
 }
-const ids = JSON.parse(fs.readFileSync('./ids/anime-rank.json'))
+const ids = JSON.parse(fs.readFileSync('./ids/book-rank.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
@@ -101,4 +101,4 @@ function fetchSubject(id, index) {
 }
 
 const fetchs = ids.map((id, index) => () => fetchSubject(id, index))
-utils.queue(fetchs, 2)
+utils.queue(fetchs, 4)
