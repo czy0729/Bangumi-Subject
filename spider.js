@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-16 09:41:57
+ * @Last Modified time: 2020-01-16 10:19:35
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -16,7 +16,7 @@ const headers = {
   'User-Agent':
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36'
 }
-const ids = JSON.parse(fs.readFileSync('./ids/music-rank.json'))
+const ids = JSON.parse(fs.readFileSync('./ids/game-rank.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
