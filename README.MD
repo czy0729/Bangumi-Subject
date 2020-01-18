@@ -162,3 +162,33 @@ https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@latest/data/2891/289173.json
 }
 
 ```
+
+### 中文名可以通过 bangumi-data 查找, 或者在 info 里面截取
+
+```
+import bangumiData from 'bangumi-data'
+
+/**
+ * 查找番剧中文名
+ */
+const _bangumiFindHistory = {}
+export function findBangumiCn(jp = '') {
+  if (_bangumiFindHistory[jp]) {
+    return _bangumiFindHistory[jp]
+  }
+
+  const item = bangumiData.items.find(item => item.title === jp)
+  if (item) {
+    const cn =
+      (item.titleTranslate &&
+        item.titleTranslate['zh-Hans'] &&
+        item.titleTranslate['zh-Hans'][0]) ||
+      jp
+    _bangumiFindHistory[jp] = cn
+    return cn
+  }
+
+  _bangumiFindHistory[jp] = jp
+  return jp
+}
+```
