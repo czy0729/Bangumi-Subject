@@ -1,4 +1,4 @@
-## Bangumi 静态条目数据快照
+## Bangumi 条目静态数据快照
 
 [![](https://data.jsdelivr.com/v1/package/gh/czy0729/Bangumi-Subject/badge)](https://www.jsdelivr.com/package/gh/czy0729/Bangumi-Subject)
 
