@@ -153,8 +153,10 @@ https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@latest/data/2891/289173.json
     }
   ],
 
-  disc: [], // 音乐类型专有
-  lock: '', // 是否锁定条目
+  disc: [], // 碟片信息, 音乐类型专有
+  comic: [], // 单行本, 书籍类型专有
+  like: [], // 猜你喜欢, 游戏类型专有
+  lock: '', // 是否锁定条目, 有值就是锁定
 
   _loaded: 1579062475
 }
