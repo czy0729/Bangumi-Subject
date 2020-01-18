@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-16 13:40:27
+ * @Last Modified time: 2020-01-18 10:21:21
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -85,7 +85,6 @@ function fetchSubject(id, index) {
 
     // 锁定
     if (htmlDS.lock) data.lock = htmlDS.lock
-
     data._loaded = utils.getTimestamp()
 
     const dirPath = path.dirname(filePath)
