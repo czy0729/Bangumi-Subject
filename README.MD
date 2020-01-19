@@ -6,20 +6,23 @@
 
 因服务器在国外, App 里请求官方 API 和分析网页整合数据渲染特别慢, 所以对精选条目进行了爬虫快照 (30w 条目里面划了 3w, 覆盖正常用户点击的 90%条目), 以达到网页服务器慢也不影响 App 内卡住的目的.
 
-精选条目范围: 2020 年的动画, 所有类型的排行榜上的条目, bangumi-data 里面的所有条目 id.
-
 条目页面数据 fallback: 网页解释 > 官方 API > bangumi-data > CDN.
 
 通过 jsdelivr 达到白嫖效果.
 
+### 条目范围
+
+不是所有条目都收纳, 30W 的条目里面有 80%是三无书籍条目, 没意义.
+项目只爬取 2020 年的动画, 所有类型的排行榜上的条目, bangumi-data 里面的所有条目 id.
+
 ### 使用方法
 
 ```
-https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@latest/data/${parseInt(parseInt(subjectId) / 100)}/${subjectId}.json
+https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@master/data/${parseInt(parseInt(subjectId) / 100)}/${subjectId}.json
 
 // 例如 subjectId 为 289173 访问地址为
 
-https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@latest/data/2891/289173.json
+https://cdn.jsdelivr.net/gh/czy0729/Bangumi-Subject@master/data/2891/289173.json
 ```
 
 ### 自动更新 js 脚本
