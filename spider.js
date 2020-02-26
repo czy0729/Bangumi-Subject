@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-18 11:16:19
+ * @Last Modified time: 2020-02-26 10:14:00
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -10,18 +10,19 @@ const path = require('path')
 const cheerio = require('./utils/cheerio')
 const utils = require('./utils/utils')
 
+const rewrite = false
 const headers = {
   Cookie:
-    'chii_cookietime=2592000; chii_sid=8QpPqe; chii_auth=DKKylRLwViX7z7mM%2BNDojP%2BC3YrhQRbZ7mb3c2bc4%2B8UERL86NKtwDnro%2BPglSIgLSGPKOp%2BpnQp6n6n1S3f9NiMRDVwuw5wHwxA',
+    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_list_mode=full; chii_auth=ZY2amn%2BLt1ROA%2FCEeyOgKmOXaDB6bK1eDVFhsnnTyW%2BBVTY7P8BONkqtutFKRpZq1PeIzu%2BvRC9cmeW98OQ4xa%2FT1Q%2F3CIuBbKYR; prg_display_mode=normal; __utmc=1; __utmz=1.1582048403.776.48.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/overview/index; chii_sid=7ENMG0; __utma=1.7292625.1567003648.1582165918.1582168700.785; __utmt=1; __utmb=1.1.10.1582168700',
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 }
-const ids = JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json'))
+const ids = JSON.parse(fs.readFileSync('./ids/anime-rank.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
     const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
-    if (fs.existsSync(filePath)) {
+    if (!rewrite && fs.existsSync(filePath)) {
       // console.log(`- skip ${id}.json [${index} / ${ids.length}]`)
       return resolve(true)
     }
@@ -85,7 +86,7 @@ function fetchSubject(id, index) {
 
     // 锁定
     if (htmlDS.lock) data.lock = htmlDS.lock
-    data._loaded = utils.getTimestamp()
+    // data._loaded = utils.getTimestamp()
 
     const dirPath = path.dirname(filePath)
     if (!fs.existsSync(dirPath)) {

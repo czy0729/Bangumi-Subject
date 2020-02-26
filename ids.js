@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-18 10:07:18
+ * @Last Modified time: 2020-02-24 14:53:55
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -35,17 +35,6 @@ const utils = require('./utils/utils')
   const data = []
 
   /**
-   * bangumi-data
-   */
-  bangumiData.items.forEach(item => {
-    const find = item.sites.find(i => i.site === 'bangumi')
-    if (find) {
-      data.push(parseInt(find.id))
-    }
-  })
-  const filePath = './ids/anime-bangumi-data.json'
-
-  /**
    * anime 2020
    */
   // for (let page = 1; page < 12; page++) {
@@ -60,9 +49,20 @@ const utils = require('./utils/utils')
   // const filePath = './ids/anime-2020.json'
 
   /**
-   * anime rank page 1-234
+   * bangumi-data
    */
-  // for (let page = 1; page < 235; page++) {
+  // bangumiData.items.forEach(item => {
+  //   const find = item.sites.find(i => i.site === 'bangumi')
+  //   if (find) {
+  //     data.push(parseInt(find.id))
+  //   }
+  // })
+  // const filePath = './ids/anime-bangumi-data.json'
+
+  /**
+   * anime rank page 1-236
+   */
+  // for (let page = 1; page < 237; page++) {
   //   const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
   //     url
@@ -74,9 +74,9 @@ const utils = require('./utils/utils')
   // const filePath = './ids/anime-rank.json'
 
   /**
-   * book rank page 1-146
+   * book rank page 1-150
    */
-  // for (let page = 1; page < 147; page++) {
+  // for (let page = 1; page < 151; page++) {
   //   const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
   //     url
@@ -88,9 +88,9 @@ const utils = require('./utils/utils')
   // const filePath = './ids/book-rank.json'
 
   /**
-   * music rank page 1-155
+   * music rank page 1-158
    */
-  // for (let page = 1; page < 156; page++) {
+  // for (let page = 1; page < 159; page++) {
   //   const url = `https://bgm.tv/music/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
   //     url
@@ -102,9 +102,9 @@ const utils = require('./utils/utils')
   // const filePath = './ids/music-rank.json'
 
   /**
-   * game rank page 1-192
+   * game rank page 1-195
    */
-  // for (let page = 1; page < 193; page++) {
+  // for (let page = 1; page < 196; page++) {
   //   const url = `https://bgm.tv/game/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
   //     url
@@ -116,18 +116,18 @@ const utils = require('./utils/utils')
   // const filePath = './ids/game-rank.json'
 
   /**
-   * real rank page 1-80
+   * real rank page 1-83
    */
-  // for (let page = 1; page < 81; page++) {
-  //   const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
-  //   const { data: indexHTML } = await axios({
-  //     url
-  //   })
+  for (let page = 1; page < 84; page++) {
+    const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
+    const { data: indexHTML } = await axios({
+      url
+    })
 
-  //   console.log(`- fetching ${url}`)
-  //   data.push(...cheerio.cheerioIds(indexHTML))
-  // }
-  // const filePath = './ids/real-rank.json'
+    console.log(`- fetching ${url}`)
+    data.push(...cheerio.cheerioIds(indexHTML))
+  }
+  const filePath = './ids/real-rank.json'
 
   /**
    * start
