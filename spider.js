@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-02-26 10:14:00
+ * @Last Modified time: 2020-04-04 01:14:17
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,11 +13,11 @@ const utils = require('./utils/utils')
 const rewrite = false
 const headers = {
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_list_mode=full; chii_auth=ZY2amn%2BLt1ROA%2FCEeyOgKmOXaDB6bK1eDVFhsnnTyW%2BBVTY7P8BONkqtutFKRpZq1PeIzu%2BvRC9cmeW98OQ4xa%2FT1Q%2F3CIuBbKYR; prg_display_mode=normal; __utmc=1; __utmz=1.1582048403.776.48.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/overview/index; chii_sid=7ENMG0; __utma=1.7292625.1567003648.1582165918.1582168700.785; __utmt=1; __utmb=1.1.10.1582168700',
+    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_list_mode=full; __utmz=1.1585242027.973.51.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/trend/latest; prg_display_mode=normal; chii_sid=RuLGnO; __utma=1.7292625.1567003648.1585901918.1585933888.1017; __utmc=1; __utmt=1; chii_auth=e%2BpgC%2BSoQPRGanNcFZdYx9zijTcaKFPMnqQ9lNs%2FyUUmmP6FLAdIHJr3HlQOp4Lraozg%2FdeY%2FmTPajQU4zEoNmSQrmeldG64PApd; __utmb=1.3.10.1585933888',
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'
 }
-const ids = JSON.parse(fs.readFileSync('./ids/anime-rank.json'))
+const ids = JSON.parse(fs.readFileSync('./ids/real-rank.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
@@ -100,5 +100,11 @@ function fetchSubject(id, index) {
   })
 }
 
-const fetchs = ids.map((id, index) => () => fetchSubject(id, index))
+const fetchs = ids.map((id, index) => () => {
+  try {
+    return fetchSubject(id, index)
+  } catch (error) {
+    return true
+  }
+})
 utils.queue(fetchs, 4)

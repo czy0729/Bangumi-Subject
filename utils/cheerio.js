@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:54
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-01-15 10:21:30
+ * @Last Modified time: 2020-03-24 10:39:58
  */
 const utils = require('./utils')
 const match = require('./match')
@@ -116,8 +116,7 @@ function cheerioSubjectFormHTML(HTML) {
   //     .get() || [];
 
   // 详情
-  const info = $('#infobox')
-    .html()
+  const info = String($('#infobox').html())
     .replace(/\n/g, '')
     .replace(/ class="(.+?)"/g, '')
     .replace(/ title="(.+?)"/g, '')
