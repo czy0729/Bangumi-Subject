@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-04-04 01:14:17
+ * @Last Modified time: 2020-05-02 18:56:05
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,11 +13,11 @@ const utils = require('./utils/utils')
 const rewrite = false
 const headers = {
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_list_mode=full; __utmz=1.1585242027.973.51.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/trend/latest; prg_display_mode=normal; chii_sid=RuLGnO; __utma=1.7292625.1567003648.1585901918.1585933888.1017; __utmc=1; __utmt=1; chii_auth=e%2BpgC%2BSoQPRGanNcFZdYx9zijTcaKFPMnqQ9lNs%2FyUUmmP6FLAdIHJr3HlQOp4Lraozg%2FdeY%2FmTPajQU4zEoNmSQrmeldG64PApd; __utmb=1.3.10.1585933888',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; __utmz=1.1588067032.1123.55.utmcsr=github.com|utmccn=(referral)|utmcmd=referral|utmcct=/czy0729/Bangumi; prg_display_mode=normal; __utmc=1; chii_auth=OQ1j1Lt8wRqOg4syUgheSh7dEsKCYX0xWnhbVIz4t%2BYW6i7hARzgPIYqwiWPrAL%2BqVqVvHOARHedXTUPiQGgBBQE%2FQy%2BrFyQKl9I; __utma=1.7292625.1567003648.1588393703.1588404355.1145; chii_sid=1DurGD',
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36',
 }
-const ids = JSON.parse(fs.readFileSync('./ids/real-rank.json'))
+const ids = JSON.parse(fs.readFileSync('./ids/anime-2020.json'))
 
 function fetchSubject(id, index) {
   return new Promise(async (resolve, reject) => {
@@ -28,12 +28,12 @@ function fetchSubject(id, index) {
     }
 
     const { data: apiDS } = await axios({
-      url: `https://api.bgm.tv/subject/${id}?responseGroup=large`
+      url: `https://api.bgm.tv/subject/${id}?responseGroup=large`,
     })
 
     const { data: html } = await axios({
       url: `https://bangumi.tv/subject/${id}`,
-      headers
+      headers,
     })
     const htmlDS = cheerio.cheerioSubjectFormHTML(html)
 
@@ -41,7 +41,7 @@ function fetchSubject(id, index) {
     const data = {
       id: apiDS.id,
       type: apiDS.type,
-      name: apiDS.name
+      name: apiDS.name,
     }
     if (apiDS.images && apiDS.images.medium)
       data.image = utils.smallImage(apiDS)
@@ -59,22 +59,22 @@ function fetchSubject(id, index) {
 
     // 人物
     if (apiDS.crt && apiDS.crt.length) {
-      data.crt = apiDS.crt.map(item => ({
+      data.crt = apiDS.crt.map((item) => ({
         id: item.id || '',
         image: utils.smallImage(item, 'grid'),
         name: item.name_cn || item.name || '',
         desc:
           (item.actors && item.actors[0] && item.actors[0].name) ||
           item.role_name ||
-          ''
+          '',
       }))
     }
     if (apiDS.staff && apiDS.staff.length) {
-      data.staff = apiDS.staff.map(item => ({
+      data.staff = apiDS.staff.map((item) => ({
         id: item.id || '',
         image: utils.smallImage(item, 'grid'),
         name: item.name_cn || item.name || '',
-        desc: (item.jobs && item.jobs[0]) || ''
+        desc: (item.jobs && item.jobs[0]) || '',
       }))
     }
 
@@ -93,7 +93,7 @@ function fetchSubject(id, index) {
       fs.mkdirSync(dirPath)
     }
 
-    console.log(`- writing ${id}.json [${index} / ${ids.length}]`)
+    console.log(`- writing ${id}.json [${index} / ${ids.length}]`, data.name)
     fs.writeFileSync(filePath, utils.safeStringify(data))
 
     return resolve(true)

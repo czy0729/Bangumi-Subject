@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-03-27 15:23:24
+ * @Last Modified time: 2020-05-02 18:49:59
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -37,16 +37,16 @@ const utils = require('./utils/utils')
   /**
    * anime 2020
    */
-  // for (let page = 1; page < 12; page++) {
-  //   console.log(
-  //     `- fetching ${`https://bgm.tv/anime/browser/airtime/2020?page=${page}`}`
-  //   )
-  //   const { data: indexHTML } = await axios({
-  //     url: `https://bgm.tv/anime/browser/airtime/2020?page=${page}`
-  //   })
-  //   data.push(...cheerio.cheerioIds(indexHTML))
-  // }
-  // const filePath = './ids/anime-2020.json'
+  for (let page = 1; page < 18; page++) {
+    console.log(
+      `- fetching ${`https://bgm.tv/anime/browser/airtime/2020?page=${page}`}`
+    )
+    const { data: indexHTML } = await axios({
+      url: `https://bgm.tv/anime/browser/airtime/2020?page=${page}`,
+    })
+    data.push(...cheerio.cheerioIds(indexHTML))
+  }
+  const filePath = './ids/anime-2020.json'
 
   /**
    * bangumi-data
@@ -62,16 +62,16 @@ const utils = require('./utils/utils')
   /**
    * anime rank page 1-236
    */
-  for (let page = 1; page < 237; page++) {
-    const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url
-    })
+  // for (let page = 1; page < 237; page++) {
+  //   const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  const filePath = './ids/anime-rank.json'
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/anime-rank.json'
 
   /**
    * book rank page 1-150
