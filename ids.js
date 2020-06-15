@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-05-02 18:49:59
+ * @Last Modified time: 2020-06-13 21:02:07
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -35,24 +35,38 @@ const utils = require('./utils/utils')
   const data = []
 
   /**
+   * anime 2021
+   */
+  // for (let page = 1; page <= 3; page++) {
+  //   console.log(
+  //     `- fetching ${`https://bgm.tv/anime/browser/airtime/2021?page=${page}`}`
+  //   )
+  //   const { data: indexHTML } = await axios({
+  //     url: `https://bgm.tv/anime/browser/airtime/2021?page=${page}`,
+  //   })
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/anime-2021.json'
+
+  /**
    * anime 2020
    */
-  for (let page = 1; page < 18; page++) {
-    console.log(
-      `- fetching ${`https://bgm.tv/anime/browser/airtime/2020?page=${page}`}`
-    )
-    const { data: indexHTML } = await axios({
-      url: `https://bgm.tv/anime/browser/airtime/2020?page=${page}`,
-    })
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  const filePath = './ids/anime-2020.json'
+  // for (let page = 1; page <= 19; page++) {
+  //   console.log(
+  //     `- fetching ${`https://bgm.tv/anime/browser/airtime/2020?page=${page}`}`
+  //   )
+  //   const { data: indexHTML } = await axios({
+  //     url: `https://bgm.tv/anime/browser/airtime/2020?page=${page}`,
+  //   })
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // const filePath = './ids/anime-2020.json'
 
   /**
    * bangumi-data
    */
-  // bangumiData.items.forEach(item => {
-  //   const find = item.sites.find(i => i.site === 'bangumi')
+  // bangumiData.items.forEach((item) => {
+  //   const find = item.sites.find((i) => i.site === 'bangumi')
   //   if (find) {
   //     data.push(parseInt(find.id))
   //   }
@@ -60,12 +74,12 @@ const utils = require('./utils/utils')
   // const filePath = './ids/anime-bangumi-data.json'
 
   /**
-   * anime rank page 1-236
+   * anime rank
    */
-  // for (let page = 1; page < 237; page++) {
+  // for (let page = 1; page <= 243; page++) {
   //   const url = `https://bgm.tv/anime/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
-  //     url
+  //     url,
   //   })
 
   //   console.log(`- fetching ${url}`)
@@ -74,12 +88,12 @@ const utils = require('./utils/utils')
   // const filePath = './ids/anime-rank.json'
 
   /**
-   * book rank page 1-150
+   * book rank
    */
-  // for (let page = 1; page < 151; page++) {
+  // for (let page = 1; page <= 157; page++) {
   //   const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
-  //     url
+  //     url,
   //   })
 
   //   console.log(`- fetching ${url}`)
@@ -88,12 +102,12 @@ const utils = require('./utils/utils')
   // const filePath = './ids/book-rank.json'
 
   /**
-   * music rank page 1-158
+   * music rank
    */
-  // for (let page = 1; page < 159; page++) {
+  // for (let page = 1; page <= 163; page++) {
   //   const url = `https://bgm.tv/music/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
-  //     url
+  //     url,
   //   })
 
   //   console.log(`- fetching ${url}`)
@@ -102,12 +116,12 @@ const utils = require('./utils/utils')
   // const filePath = './ids/music-rank.json'
 
   /**
-   * game rank page 1-195
+   * game rank
    */
-  // for (let page = 1; page < 196; page++) {
+  // for (let page = 1; page <= 201; page++) {
   //   const url = `https://bgm.tv/game/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
-  //     url
+  //     url,
   //   })
 
   //   console.log(`- fetching ${url}`)
@@ -118,10 +132,10 @@ const utils = require('./utils/utils')
   /**
    * real rank page 1-83
    */
-  // for (let page = 1; page < 84; page++) {
+  // for (let page = 1; page <= 83; page++) {
   //   const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
   //   const { data: indexHTML } = await axios({
-  //     url
+  //     url,
   //   })
 
   //   console.log(`- fetching ${url}`)
