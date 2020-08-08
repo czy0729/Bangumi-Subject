@@ -2,14 +2,14 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-06-15 15:58:28
+ * @Last Modified time: 2020-08-03 21:46:06
  */
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
 const cheerio = require('./utils/cheerio')
 const utils = require('./utils/utils')
-axios.defaults.timeout = 6000
+axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
 const rewrite = false
