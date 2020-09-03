@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-08-09 05:41:39
+ * @Last Modified time: 2020-09-03 11:55:48
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,18 +13,20 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
-const rewrite = false
+const rewrite = true
 const startIndex = 0
 const queue = 8
 const ids = [
-  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
+  ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
 ]
 
 /*
@@ -35,15 +37,16 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36',
   Cookie:
-    '__cfduid=d10ce460503307836b7f7dfc6f19b10b11567003647; chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1595138713.1545.69.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/trend/latest; chii_theme=dark; __utmc=1; chii_searchDateLine=0; __utma=1.7292625.1567003648.1596860087.1596865033.1622; __utmt=1; chii_sid=zk53HA; chii_auth=MhC3h6SUV9MTRltnbl0U2HMA9swTI%2BN0tdxPtvPS9QKYgfQcIxdcgZzHrX44UF4JWEST2xQTCEdtMFkFBpV9yv8BZAAW824QDdZD; __utmb=1.4.10.1596865033',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1595138713.1545.69.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/trend/latest; chii_theme=dark; chii_auth=D9QrCdpaKVFw7Nx9tKb%2FnRs7fCNzKTAXXUlW%2BkNSb0DSElgQmjrhpSLLsBod5lgfsnhFIA6hoZLsjHT4ISVufQJh5BmjiDfHjyNk; __utmc=1; chii_searchDateLine=1599061743; __utma=1.7292625.1567003648.1599102440.1599104328.1732; chii_sid=3qsRKO; __utmt=1; __utmb=1.8.10.1599104328',
 }
 
 async function fetchSubject(id, index) {
   try {
-    const filePath = `./data-update/${Math.floor(id / 100)}/${id}.json`
-    if (!rewrite && fs.existsSync(filePath)) return true
+    const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
+    const exists = fs.existsSync(filePath)
+    if (!rewrite && exists) return true
 
     const { data: html } = await axios({
       url: `https://${host}/subject/${id}`,
@@ -110,7 +113,7 @@ async function fetchSubject(id, index) {
       fs.mkdirSync(dirPath)
     }
 
-    console.log(`- writing ${id}.json [${index} / ${ids.length}]`, data.name)
+    console.log(`- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}]`, data.name)
     fs.writeFileSync(filePath, utils.safeStringify(data))
 
     return true

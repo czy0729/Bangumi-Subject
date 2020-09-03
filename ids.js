@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-08-08 10:30:24
+ * @Last Modified time: 2020-09-03 11:53:07
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -105,62 +105,80 @@ const pages = {
   /**
    * book rank
    */
-  for (let page = 1; page <= pages.book; page++) {
-    const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url,
-    })
+  // for (let page = 1; page <= pages.book; page++) {
+  //   const url = `https://bgm.tv/book/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url,
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/book-rank.json', data)
-  data = []
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/book-rank.json', data)
+  // data = []
 
   /**
    * music rank
    */
-  for (let page = 1; page <= pages.music; page++) {
-    const url = `https://bgm.tv/music/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url,
-    })
+  // for (let page = 1; page <= pages.music; page++) {
+  //   const url = `https://bgm.tv/music/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url,
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/music-rank.json', data)
-  data = []
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/music-rank.json', data)
+  // data = []
 
   /**
    * game rank
    */
-  for (let page = 1; page <= pages.game; page++) {
-    const url = `https://bgm.tv/game/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url,
-    })
+  // for (let page = 1; page <= pages.game; page++) {
+  //   const url = `https://bgm.tv/game/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url,
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/game-rank.json', data)
-  data = []
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/game-rank.json', data)
+  // data = []
 
   /**
    * real rank page 1-83
    */
-  for (let page = 1; page <= pages.real; page++) {
-    const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
-    const { data: indexHTML } = await axios({
-      url,
-    })
+  // for (let page = 1; page <= pages.real; page++) {
+  //   const url = `https://bgm.tv/real/browser?sort=rank&page=${page}`
+  //   const { data: indexHTML } = await axios({
+  //     url,
+  //   })
 
-    console.log(`- fetching ${url}`)
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/real-rank.json', data)
-  data = []
+  //   console.log(`- fetching ${url}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/real-rank.json', data)
+  // data = []
+
+  /**
+   * agefans
+   */
+  // data = Object.keys(
+  //   JSON.parse(fs.readFileSync('../Bangumi-Static/data/agefans/data.json'))
+  // ).map((id) => parseInt(id))
+  // write('./ids/agefans.json', data)
+  // data = []
+
+  /**
+   * wk8
+   */
+  // data = Object.keys(
+  //   JSON.parse(fs.readFileSync('../Bangumi-Static/data/wenku8/data.json'))
+  // ).map((id) => parseInt(id))
+  // write('./ids/wk8.json', data)
+  // data = []
 
   console.log('done')
 })()
