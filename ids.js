@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-09-03 11:53:07
+ * @Last Modified time: 2020-09-03 17:49:42
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -179,6 +179,25 @@ const pages = {
   // ).map((id) => parseInt(id))
   // write('./ids/wk8.json', data)
   // data = []
+
+  /**
+   * wk8 系列的第一个单行本的id 用于获取开始日期 基于上一步数据
+   */
+  Object.keys(
+    JSON.parse(fs.readFileSync('../Bangumi-Static/data/wenku8/data.json'))
+  ).map((id) => {
+    const filePath = `.//data/${Math.floor(
+      id / 100
+    )}/${id}.json`
+    if (fs.existsSync(filePath)) {
+      const subject = JSON.parse(fs.readFileSync(filePath))
+      if (Array.isArray(subject.comic) && subject.comic[0] && subject.comic[0].id) {
+        data.push(parseInt(subject.comic[0].id))
+      }
+    }
+  })
+  write('./ids/wk8-series.json', data)
+  data = []
 
   console.log('done')
 })()

@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-09-03 11:55:48
+ * @Last Modified time: 2020-09-03 17:56:00
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,7 +13,7 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
-const rewrite = true
+const rewrite = false
 const startIndex = 0
 const queue = 8
 const ids = [
@@ -25,8 +25,9 @@ const ids = [
   // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
-  ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
 ]
 
 /*
@@ -113,7 +114,10 @@ async function fetchSubject(id, index) {
       fs.mkdirSync(dirPath)
     }
 
-    console.log(`- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}]`, data.name)
+    console.log(
+      `- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}]`,
+      data.name
+    )
     fs.writeFileSync(filePath, utils.safeStringify(data))
 
     return true
