@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-09-03 17:56:00
+ * @Last Modified time: 2020-10-08 05:20:39
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -17,17 +17,17 @@ const rewrite = false
 const startIndex = 0
 const queue = 8
 const ids = [
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
+  ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
+  ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
 ]
 
 /*
@@ -38,9 +38,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1595138713.1545.69.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/web/28208841/trend/latest; chii_theme=dark; chii_auth=D9QrCdpaKVFw7Nx9tKb%2FnRs7fCNzKTAXXUlW%2BkNSb0DSElgQmjrhpSLLsBod5lgfsnhFIA6hoZLsjHT4ISVufQJh5BmjiDfHjyNk; __utmc=1; chii_searchDateLine=1599061743; __utma=1.7292625.1567003648.1599102440.1599104328.1732; chii_sid=3qsRKO; __utmt=1; __utmb=1.8.10.1599104328',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; __utmz=1.1600135666.1796.73.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; chii_auth=9AyF%2Fz%2BDeZDB7%2BAtJZyCBXnfaalqiBFSNmUB25zxS47xJkiQSZtYzl8%2BxOtsiJyaHeo7GMEwvT7TFnDzGmZuRDURLQmAB9q4Uzdp; __utmc=1; chii_searchDateLine=0; prg_display_mode=normal; chii_sid=zbbVih; __utma=1.7292625.1567003648.1602097610.1602105592.1861; __utmt=1; __utmb=1.1.10.1602105592',
 }
 
 async function fetchSubject(id, index) {
