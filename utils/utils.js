@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:18
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-06-14 15:12:52
+ * @Last Modified time: 2020-11-02 14:58:53
  */
 const cheerioRN = require('cheerio-without-node-native')
 
@@ -82,6 +82,22 @@ function sleep(ms = 800) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+function decode(str = '') {
+  if (str.length === 0) {
+    return ''
+  }
+  return (
+    str
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&nbsp;/g, ' ')
+      // eslint-disable-next-line quotes
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+  )
+}
+
 module.exports = {
   safeObject,
   getCoverMedium,
@@ -92,4 +108,5 @@ module.exports = {
   getTimestamp,
   smallImage,
   sleep,
+  decode
 }
