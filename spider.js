@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-12-12 16:05:25
+ * @Last Modified time: 2021-01-12 11:49:47
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,29 +13,31 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
-const rewrite = true
+const rewrite = false
 const startIndex = 0
 const queue = 8
 const ids = [
-  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
-  ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
-  ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/manga.json')),
+  ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
 ]
 
 /*
@@ -46,9 +48,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; prg_display_mode=normal; __utmz=1.1607152658.2102.85.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_auth=mqnhUtHZB8hNG0E6SU9cRuy2rTtQF2MvU2x1tg7CIFFxBsS66yCBjY4l8fhG9rVmjrJAI7qC8x6PAA%2BTIvr19y9YwdJFnaXTOmPP; chii_sid=8404nI; __utma=1.7292625.1567003648.1607677487.1607756837.2114; __utmc=1; __utmt=1; __utmb=1.1.10.1607756837',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; __utmz=1.1607152658.2102.85.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_auth=Bmn0EEpQr1rIvfuVSrrsM8fnbswYFqk15mgr29Zr32cl7pFtV0LJjXJWaTuHNYbc3DW9OBpOEmavwsz5oreJlyGwId%2BUB9OVn9tB; prg_display_mode=normal; chii_sid=SPpPzJ; __utma=1.7292625.1567003648.1610300684.1610368594.2249; __utmc=1; __utmt=1; __utmb=1.2.10.1610368594',
 }
 
 async function fetchSubject(id, index) {
