@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-01-12 11:49:47
+ * @Last Modified time: 2021-02-18 02:05:09
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,11 +13,11 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
-const rewrite = false
+const rewrite = true
 const startIndex = 0
 const queue = 8
 const ids = [
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
@@ -37,7 +37,7 @@ const ids = [
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
   // ...JSON.parse(fs.readFileSync('./ids/manga.json')),
-  ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
 ]
 
 /*
@@ -48,9 +48,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; __utmz=1.1607152658.2102.85.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_auth=Bmn0EEpQr1rIvfuVSrrsM8fnbswYFqk15mgr29Zr32cl7pFtV0LJjXJWaTuHNYbc3DW9OBpOEmavwsz5oreJlyGwId%2BUB9OVn9tB; prg_display_mode=normal; chii_sid=SPpPzJ; __utma=1.7292625.1567003648.1610300684.1610368594.2249; __utmc=1; __utmt=1; __utmb=1.2.10.1610368594',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; chii_theme=dark; __utmz=1.1612160564.2339.91.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_auth=GFo9LloWvJBY3%2BfpK0tm%2BZYfE2FCi4n%2B1sdgp%2Fqx2lzJUCfI3sld4GcyP1U1Lh%2FQuiu1Zvh52xbYn4rsZjIX6gppOanATZI45gsd; __utma=1.7292625.1567003648.1613560544.1613584336.2388; __utmc=1; chii_sid=KjVejE; __utmb=1.4.10.1613584336',
 }
 
 async function fetchSubject(id, index) {
