@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-03-14 18:57:25
+ * @Last Modified time: 2021-03-18 10:19:56
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -19,7 +19,7 @@ const startIndex = 0
 const queue = 8
 
 const ids = []
-for (let i = 50000; i <= 100000; i += 1) {
+for (let i = 100000; i <= 150000; i += 1) {
   ids.push(i)
 }
 
@@ -123,7 +123,7 @@ async function fetchSubject(id, index) {
       ' / ' +
       ids.length +
       '] \x1b[0m'
-    console.log(msg)
+    console.log(msg, error)
     return fetchSubject(id, index)
   }
 }
