@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-03-21 19:15:35
+ * @Last Modified time: 2021-04-01 17:50:36
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -14,12 +14,12 @@ axios.defaults.timeout = 3000
 
 const host = 'bgm.tv'
 const rewrite = false
-const index = 330565
+const index = 331996
 const startIndex = 0
 const queue = 8
 
 const ids = []
-for (let i = 250000; i <= 300000; i += 1) {
+for (let i = 1; i <= index; i += 1) {
   ids.push(i)
 }
 
@@ -31,9 +31,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
   Cookie:
-    'chii_sec_id=gKB4FVqYg8LPoxJJctmSAsCl5PZ8bR5Vs%2BGdgLWE; chii_theme=dark; __utmz=1.1616215584.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); chii_cookietime=2592000; chii_auth=gfQvEwCZg5nZoEpDctiBe5vThLweMAYbsoC5s%2BinYttIRntllpm4KgNKS7GsLtRPK1AQaKRc0AWUPGx5l87T8qzn32UIZN4TGF4w; chii_sid=8fKgH3; __utma=1.859723941.1616215584.1616267392.1616316823.9; __utmc=1; __utmt=1; __utmb=1.1.10.1616316823',
+    'chii_sec_id=gKB4FVqYg8LPoxJJctmSAsCl5PZ8bR5Vs%2BGdgLWE; chii_theme=dark; chii_cookietime=2592000; prg_display_mode=normal; __utmz=1.1616738070.47.4.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utmc=1; chii_auth=MTyUa8rYhTfxTE5dNAO%2F4DotI1XOs0XMAWdOO3cKc2%2FSD2rEEa%2Bu%2Bct4QyelUscQeSWPa5M56LjiYtaZ7HJFr3rK2F1R%2B6ndtQ%2Fz; chii_sid=FdD9FD; __utma=1.859723941.1616215584.1617243467.1617247355.71; __utmt=1; __utmb=1.1.10.1617247355',
 }
 
 async function fetchSubject(id, index) {
