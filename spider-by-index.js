@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-04-01 17:50:36
+ * @Last Modified time: 2021-05-27 19:22:32
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -12,35 +12,63 @@ const utils = require('./utils/utils')
 
 axios.defaults.timeout = 3000
 
+// settings
 const host = 'bgm.tv'
-const rewrite = false
-const index = 331996
-const startIndex = 0
-const queue = 8
+const rewrite = true
+const index = 337455
+const startIndex = 146790
+const queue = 4
 
-const ids = []
-for (let i = 1; i <= index; i += 1) {
-  ids.push(i)
-}
-
-/*
-JSON.stringify({
-  'User-Agent': navigator.userAgent,
-  Cookie: document.cookie
-});
-*/
+// navigator.userAgent
+// document.cookie
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
   Cookie:
-    'chii_sec_id=gKB4FVqYg8LPoxJJctmSAsCl5PZ8bR5Vs%2BGdgLWE; chii_theme=dark; chii_cookietime=2592000; prg_display_mode=normal; __utmz=1.1616738070.47.4.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utmc=1; chii_auth=MTyUa8rYhTfxTE5dNAO%2F4DotI1XOs0XMAWdOO3cKc2%2FSD2rEEa%2Bu%2Bct4QyelUscQeSWPa5M56LjiYtaZ7HJFr3rK2F1R%2B6ndtQ%2Fz; chii_sid=FdD9FD; __utma=1.859723941.1616215584.1617243467.1617247355.71; __utmt=1; __utmb=1.1.10.1617247355',
+    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_theme=dark; chii_cookietime=2592000; prg_display_mode=normal; chii_auth=IuhLjo80PVWxmthpL%2F%2F%2FrXsmQ46BgSvudPXdFi4AdsB06OH06E%2FQki9R5oT1nw88t8ArLrGmaNHcJywJ4HgPIUWSlh9NplARIlvm; __utmc=1; __utmz=1.1621969741.134.5.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=1.1636245540.1617210056.1622008035.1622010795.136; chii_sid=jzIkAx; __utmt=1; __utmb=1.34.10.1622010795',
+}
+
+// console speed
+const speed = {
+  0: 0,
+  1: 0,
+}
+let currentIndex = 0
+setInterval(() => {
+  if (currentIndex === 1) {
+    currentIndex = 0
+  } else {
+    currentIndex += 1
+  }
+
+  console.log(`- speed ${(speed[currentIndex] / 3).toFixed(1)}/s`)
+  speed[currentIndex] = 0
+}, 3000)
+
+// queue fetch
+const ids = []
+for (let i = startIndex; i <= index; i += 1) {
+  ids.push(i)
 }
 
 async function fetchSubject(id, index) {
   try {
     const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
     const exists = fs.existsSync(filePath)
-    if (!rewrite && exists) return true
+    if (!rewrite && exists) {
+      return true
+    }
+
+    try {
+      if (exists) {
+        const data = JSON.parse(fs.readFileSync(filePath))
+        if (!data.name || data.name === '坟场') {
+          return true
+        }
+      }
+    } catch (error) {
+      return true
+    }
 
     const { data: html } = await axios({
       url: `https://${host}/subject/${id}`,
@@ -108,10 +136,14 @@ async function fetchSubject(id, index) {
     }
 
     console.log(
-      `- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}]`,
+      `- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}] ${(
+        (index / ids.length) *
+        100
+      ).toFixed(1)}%`,
       data.name
     )
     fs.writeFileSync(filePath, utils.decode(utils.safeStringify(data)))
+    speed[currentIndex] += 1
 
     return true
   } catch (error) {
@@ -128,8 +160,5 @@ async function fetchSubject(id, index) {
   }
 }
 
-const fetchs = ids.map((id, index) => () => {
-  if (index < startIndex) return true
-  return fetchSubject(id, index)
-})
+const fetchs = ids.map((id, index) => () => fetchSubject(id, index))
 utils.queue(fetchs, queue)
