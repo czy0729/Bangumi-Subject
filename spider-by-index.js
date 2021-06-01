@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-05-27 19:22:32
+ * @Last Modified time: 2021-05-29 05:43:51
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -16,8 +16,8 @@ axios.defaults.timeout = 3000
 const host = 'bgm.tv'
 const rewrite = true
 const index = 337455
-const startIndex = 146790
-const queue = 4
+const startIndex = 282580
+const queue = 6
 
 // navigator.userAgent
 // document.cookie
