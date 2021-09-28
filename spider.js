@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-04-17 01:50:38
+ * @Last Modified time: 2021-09-27 23:49:50
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -18,21 +18,13 @@ const startIndex = 0
 const queue = 8
 const ids = [
   ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-2020.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
@@ -48,9 +40,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
   Cookie:
-    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_theme=dark; chii_cookietime=2592000; __utmz=1.1617340376.3.2.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_auth=lrjbcIJrruMwGsggMs8UFsxBC0hG82Uz0E7f4uwI5KvlUU5eEGNZuzV9%2FY1De8aO%2FutBvuR9HLqakR7bOrEBjhtFNOtpF5Rv5PKW; __utma=1.1636245540.1617210056.1618585688.1618593746.29; chii_sid=rTKC85; __utmc=1; __utmt=1; __utmb=1.5.10.1618593746',
+    'chii_sec_id=gKB4FVqYg8LPoxJJctmSAsCl5PZ8bR5Vs%2BGdgLWE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1629511442.303.15.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; prg_display_mode=normal; chii_auth=Pjv8PqFeL6oDyU5pd7lYbrfsvk%2BsL6SSGqvL0TcDKdRQudc4DPYSBe7jfKHzB6xV0EWarCJgWMhheUpklA%2FDNlYmXts%2BZKf4tWwJ; __utma=1.859723941.1616215584.1632600507.1632754352.360; __utmc=1; chii_sid=am4YmA; __utmt=1; __utmb=1.5.10.1632754352',
 }
 
 async function fetchSubject(id, index) {
