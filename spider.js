@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-09-27 23:49:50
+ * @Last Modified time: 2021-11-04 07:32:39
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -17,9 +17,9 @@ const rewrite = true
 const startIndex = 0
 const queue = 8
 const ids = [
-  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
   ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
   ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
@@ -40,9 +40,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36',
   Cookie:
-    'chii_sec_id=gKB4FVqYg8LPoxJJctmSAsCl5PZ8bR5Vs%2BGdgLWE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1629511442.303.15.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; prg_display_mode=normal; chii_auth=Pjv8PqFeL6oDyU5pd7lYbrfsvk%2BsL6SSGqvL0TcDKdRQudc4DPYSBe7jfKHzB6xV0EWarCJgWMhheUpklA%2FDNlYmXts%2BZKf4tWwJ; __utma=1.859723941.1616215584.1632600507.1632754352.360; __utmc=1; chii_sid=am4YmA; __utmt=1; __utmb=1.5.10.1632754352',
+    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; __utmc=1; chii_auth=fFnMALIVreoffJS87DYH%2BDYkLftawqxiRNrTl%2BRsZpwJJusfEvj08DxNdCYzlG6HVn6MTKZA5nSa%2BJtiZdJ3CwR9oT6COg0Df0M4; chii_sid=ZiLCCZ; __utma=1.1636245540.1617210056.1635366210.1635580907.334; __utmb=1.29.10.1635580907',
 }
 
 async function fetchSubject(id, index) {

@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-11-07 22:19:40
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-09-28 15:08:15
+ * @Last Modified time: 2020-11-07 22:57:35
  */
 const fs = require('fs')
 const path = require('path')
@@ -27,9 +27,13 @@ findJsonFile('./data')
 const rate = {}
 filePaths.forEach((item) => {
   try {
-    const { id, name, rating = {}, type } = JSON.parse(fs.readFileSync(item))
-    if (name === '坟场') return
-    if (rating.total >= 40 && rating.score >= 6) rate[id] = rating.score
+    const { id, rating = {}, type } = JSON.parse(fs.readFileSync(item))
+
+    if (type === 1 || type === 2 || type === 4) {
+      if (rating.total > 20) {
+        rate[id] = rating.score
+      }
+    }
   } catch (error) {}
 })
 fs.writeFileSync('./rate/rate.json', utils.safeStringify(rate))
