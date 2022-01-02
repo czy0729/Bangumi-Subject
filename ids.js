@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-10-30 16:23:20
+ * @Last Modified time: 2021-12-31 07:42:12
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -22,9 +22,9 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
   Cookie:
-    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; __utmc=1; chii_auth=fFnMALIVreoffJS87DYH%2BDYkLftawqxiRNrTl%2BRsZpwJJusfEvj08DxNdCYzlG6HVn6MTKZA5nSa%2BJtiZdJ3CwR9oT6COg0Df0M4; chii_sid=ZiLCCZ; __utma=1.1636245540.1617210056.1635366210.1635580907.334; __utmb=1.29.10.1635580907',
+    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; chii_auth=kTryE60lfNJ8LkW7SDTpUhf%2FcHK1kCSU99u5EmBuGDSVmtOfpUmVi1YLxpAT%2FPFvR%2B3p8VwETj2vFbIfw%2FujdCuTivdxlB%2FwFtTr; __utmc=1; chii_searchDateLine=0; chii_sid=88NJF5; __utma=1.1636245540.1617210056.1640904907.1640907491.377; __utmt=1; __utmb=1.1.10.1640907491',
 }
 
 async function fetch(url) {
@@ -61,15 +61,15 @@ async function fetch(url) {
  *  - https://bgm.tv/real/browser?sort=rank&page=1
  */
 const pages = {
-  anime: 276,
-  book: 192,
-  music: 192,
-  game: 237,
-  real: 94,
+  anime: 281,
+  book: 197,
+  music: 194,
+  game: 242,
+  real: 95,
 
-  2022: 7,
-  2021: 32,
-  // 2020: 35,
+  2022: 12,
+  2021: 35,
+  2020: 36,
   // book2021: 43,
   // book2020: 259,
   // music2021: 30,
@@ -112,6 +112,16 @@ const pages = {
     data.push(...cheerio.cheerioIds(indexHTML))
   }
   write('./ids/anime-2021.json', data)
+  data = []
+
+  // anime 2020
+  for (let page = 1; page <= pages[2020]; page++) {
+    const { data: indexHTML } = await fetch(
+      `https://bgm.tv/anime/browser/airtime/2020?page=${page}`
+    )
+    data.push(...cheerio.cheerioIds(indexHTML))
+  }
+  write('./ids/anime-2020.json', data)
   data = []
 
   // anime rank

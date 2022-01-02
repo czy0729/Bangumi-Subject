@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-05-29 05:43:51
+ * @Last Modified time: 2021-12-31 07:38:36
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -23,9 +23,9 @@ const queue = 6
 // document.cookie
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
   Cookie:
-    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_theme=dark; chii_cookietime=2592000; prg_display_mode=normal; chii_auth=IuhLjo80PVWxmthpL%2F%2F%2FrXsmQ46BgSvudPXdFi4AdsB06OH06E%2FQki9R5oT1nw88t8ArLrGmaNHcJywJ4HgPIUWSlh9NplARIlvm; __utmc=1; __utmz=1.1621969741.134.5.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=1.1636245540.1617210056.1622008035.1622010795.136; chii_sid=jzIkAx; __utmt=1; __utmb=1.34.10.1622010795',
+    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; chii_auth=kTryE60lfNJ8LkW7SDTpUhf%2FcHK1kCSU99u5EmBuGDSVmtOfpUmVi1YLxpAT%2FPFvR%2B3p8VwETj2vFbIfw%2FujdCuTivdxlB%2FwFtTr; __utmc=1; chii_searchDateLine=0; chii_sid=88NJF5; __utma=1.1636245540.1617210056.1640904907.1640907491.377; __utmt=1; __utmb=1.1.10.1640907491',
 }
 
 // console speed
