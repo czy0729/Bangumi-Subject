@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-05-19 16:07:31
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-12-13 22:09:39
+ * @Last Modified time: 2021-10-23 03:05:44
  */
 const fs = require('fs')
 const path = require('path')
@@ -27,16 +27,14 @@ findJsonFile('./data')
 const cn = {}
 filePaths.forEach((item) => {
   try {
-    const { id, info = '', rating = {}, type } = JSON.parse(
-      fs.readFileSync(item)
-    )
-    if (!info) {
-      return
-    }
-
-    if (!rating.total || rating.total < 200) {
-      return
-    }
+    const {
+      id,
+      info = '',
+      rating = {},
+      type,
+    } = JSON.parse(fs.readFileSync(item))
+    if (!info) return
+    if (!rating.total || rating.total < 500) return
 
     // if (type === 1 || type === 2 || type === 4) {
     if (type === 2) {
