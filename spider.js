@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-01-01 15:37:50
+ * @Last Modified time: 2022-04-13 09:52:27
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -12,10 +12,32 @@ const utils = require('./utils/utils')
 
 axios.defaults.timeout = 3000
 
+/* ==================== 修改配置 ==================== */
+/*
+JSON.stringify({
+  'User-Agent': navigator.userAgent,
+  Cookie: document.cookie
+});
+*/
+const headers = {
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
+  Cookie:
+    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; __utmz=1.1644620219.525.11.utmcsr=github.com|utmccn=(referral)|utmcmd=referral|utmcct=/czy0729/Bangumi/issues/44; chii_sec_id=UVGn9FS2nsZvmh%2BcOIKnzyRBqIjLVCA2pU2Rmw; chii_sid=YPppqx; __utma=1.1636245540.1617210056.1649706597.1649795563.590; __utmc=1; __utmt=1; chii_auth=HFY6j7UYdzcgGBjmaXNObFYXA5L0%2BYckjtOTDoVnP3uj9RYl6itIBDe%2FrulZGOcpzYo0iUiiNnjvsCCRRi3iUgV0rqi3ZEta%2Fr39; __utmb=1.2.10.1649795563',
+}
+
+const accessToken = {
+  token_type: 'Bearer',
+  access_token: 'b24fdce923341b82c8623878dd29809ab3de8c0d',
+}
+
+const folder = '_data'
+const queue = 4
+const rewrite = false
+
+/* ==================== 基本配置 ==================== */
 const host = 'bgm.tv'
-const rewrite = true
 const startIndex = 0
-const queue = 8
 const ids = [
   ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
@@ -33,84 +55,89 @@ const ids = [
   // ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
 ]
 
-/*
-JSON.stringify({
-  'User-Agent': navigator.userAgent,
-  Cookie: document.cookie
-});
-*/
-const headers = {
-  'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
-  Cookie:
-    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; chii_auth=kTryE60lfNJ8LkW7SDTpUhf%2FcHK1kCSU99u5EmBuGDSVmtOfpUmVi1YLxpAT%2FPFvR%2B3p8VwETj2vFbIfw%2FujdCuTivdxlB%2FwFtTr; chii_sid=4q5GAA; __utma=1.1636245540.1617210056.1640967339.1641022564.383; __utmc=1; __utmt=1; __utmb=1.1.10.1641022564',
-}
 
+/* ==================== 主要逻辑 ==================== */
 async function fetchSubject(id, index) {
   try {
-    const filePath = `./data/${Math.floor(id / 100)}/${id}.json`
+    const filePath = `./${folder}/${Math.floor(id / 100)}/${id}.json`
     const exists = fs.existsSync(filePath)
     if (!rewrite && exists) return true
 
+    const apiDS = await request(`https://api.bgm.tv/v0/subjects/${id}`)
+    const epsDS = await request(
+      `https://api.bgm.tv/v0/episodes?subject_id=${id}`
+    )
+    const crtDS = await request(
+      `https://api.bgm.tv/v0/subjects/${id}/characters`
+    )
+    const staffDS = await request(
+      `https://api.bgm.tv/v0/subjects/${id}/persons`
+    )
     const { data: html } = await axios({
       url: `https://${host}/subject/${id}`,
       headers,
     })
     const htmlDS = cheerio.cheerioSubjectFormHTML(html)
-    const { data: apiDS } = await axios({
-      url: `https://api.bgm.tv/subject/${id}?responseGroup=large`,
-    })
 
-    // 基本
     const data = {
       id: apiDS.id,
       type: apiDS.type,
       name: apiDS.name,
+      name_cn: apiDS.name_cn,
+      date: apiDS.date,
     }
-    if (apiDS.images && apiDS.images.medium)
-      data.image = utils.smallImage(apiDS)
-    if (apiDS.rating) data.rating = apiDS.rating
 
-    // 详情
+    if (apiDS.images?.medium) data.image = sImage(apiDS.images.medium)
+    if (apiDS.rating) data.rating = apiDS.rating
     if (apiDS.summary) data.summary = apiDS.summary
     if (htmlDS.info) data.info = htmlDS.info
-
-    // 条目收藏数章节等
     if (apiDS.collection) data.collection = apiDS.collection
     if (htmlDS.tags && htmlDS.tags.length) data.tags = htmlDS.tags
-    if (apiDS.eps && apiDS.eps.length) data.eps = apiDS.eps
+
+    if (epsDS?.data?.length) {
+      data.eps = epsDS.data.map((item) => ({
+        id: item.id,
+        url: `http://bgm.tv/ep/${item.id}`,
+        type: item.type,
+        sort: item.sort,
+        name: item.name,
+        name_cn: item.item_cn,
+        duration: item.duration,
+        airdate: item.airdate,
+        comment: item.comment,
+        desc: item.desc,
+      }))
+    }
+
     if (htmlDS.disc && htmlDS.disc.length) data.disc = htmlDS.disc
 
-    // 人物
-    if (apiDS.crt && apiDS.crt.length) {
-      data.crt = apiDS.crt.map((item) => ({
+    if (crtDS?.length) {
+      data.crt = crtDS.map((item) => ({
         id: item.id || '',
-        image: utils.smallImage(item, 'grid'),
-        name: item.name_cn || item.name || '',
-        desc:
-          (item.actors && item.actors[0] && item.actors[0].name) ||
-          item.role_name ||
-          '',
-      }))
-    }
-    if (apiDS.staff && apiDS.staff.length) {
-      data.staff = apiDS.staff.map((item) => ({
-        id: item.id || '',
-        image: utils.smallImage(item, 'grid'),
-        name: item.name_cn || item.name || '',
-        desc: (item.jobs && item.jobs[0]) || '',
+        image: sImage(item?.images?.grid),
+        name: item.name || '',
+        desc: item?.actors?.[0]?.name || item?.relation || '',
       }))
     }
 
-    // 关联
-    if (htmlDS.relations && htmlDS.relations.length)
+    if (staffDS?.length) {
+      data.staff = staffDS
+        .sort((a, b) => b.type - a.type)
+        .map((item) => ({
+          id: item.id || '',
+          image: sImage(item?.images?.grid),
+          name: item.name || '',
+          desc: item?.relation || '',
+        }))
+    }
+
+    if (htmlDS.relations && htmlDS.relations.length) {
       data.relations = htmlDS.relations
+    }
+
     if (htmlDS.comic && htmlDS.comic.length) data.comic = htmlDS.comic
     if (htmlDS.like && htmlDS.like.length) data.like = htmlDS.like
-
-    // 锁定
     if (htmlDS.lock) data.lock = htmlDS.lock
-    // data._loaded = utils.getTimestamp()
 
     const dirPath = path.dirname(filePath)
     if (!fs.existsSync(dirPath)) {
@@ -125,16 +152,16 @@ async function fetchSubject(id, index) {
 
     return true
   } catch (error) {
-    const msg =
+    console.log(
       '\x1b[40m \x1b[31m[RETRY] ' +
-      id +
-      '.json [' +
-      index +
-      ' / ' +
-      ids.length +
-      '] \x1b[0m'
-    console.log(msg)
-    return fetchSubject(id, index)
+        id +
+        '.json [' +
+        index +
+        ' / ' +
+        ids.length +
+        '] \x1b[0m'
+    )
+    // return fetchSubject(id, index)
   }
 }
 
@@ -143,3 +170,33 @@ const fetchs = ids.map((id, index) => () => {
   return fetchSubject(id, index)
 })
 utils.queue(fetchs, queue)
+
+/* ==================== 工具函数 ==================== */
+function safe(data) {
+  if (data instanceof Object) {
+    Object.keys(data).forEach((k) => (data[k] = safe(data[k])))
+  }
+  return data === null ? '' : data
+}
+
+async function request(url) {
+  axios.defaults.withCredentials = false
+
+  try {
+    const { data } = await axios({
+      method: 'get',
+      url: `${url}${url.includes('?') ? '&' : '?'}app_id=bgm8885c4d524cd61fc`,
+      headers: {
+        Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
+      },
+    })
+    return safe(data)
+  } catch (ex) {
+    console.log(ex)
+    // return request(url)
+  }
+}
+
+function sImage(str = '') {
+  return str.replace('https:', '').split('?')[0]
+}

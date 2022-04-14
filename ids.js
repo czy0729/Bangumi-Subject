@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-12-31 07:42:12
+ * @Last Modified time: 2022-04-13 04:36:35
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -22,62 +22,20 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
   Cookie:
-    'chii_sec_id=pG5Jgrb5v3PhSnN%2B9S%2Bj0sTJQGDkbMC5jU2SCGE; chii_cookietime=2592000; chii_theme_choose=1; __utmz=1.1626708381.273.9.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; prg_display_mode=normal; chii_theme=dark; chii_auth=kTryE60lfNJ8LkW7SDTpUhf%2FcHK1kCSU99u5EmBuGDSVmtOfpUmVi1YLxpAT%2FPFvR%2B3p8VwETj2vFbIfw%2FujdCuTivdxlB%2FwFtTr; __utmc=1; chii_searchDateLine=0; chii_sid=88NJF5; __utma=1.1636245540.1617210056.1640904907.1640907491.377; __utmt=1; __utmb=1.1.10.1640907491',
+    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; __utmz=1.1644620219.525.11.utmcsr=github.com|utmccn=(referral)|utmcmd=referral|utmcct=/czy0729/Bangumi/issues/44; chii_sec_id=UVGn9FS2nsZvmh%2BcOIKnzyRBqIjLVCA2pU2Rmw; chii_sid=YPppqx; __utma=1.1636245540.1617210056.1649706597.1649795563.590; __utmc=1; __utmt=1; chii_auth=HFY6j7UYdzcgGBjmaXNObFYXA5L0%2BYckjtOTDoVnP3uj9RYl6itIBDe%2FrulZGOcpzYo0iUiiNnjvsCCRRi3iUgV0rqi3ZEta%2Fr39; __utmb=1.2.10.1649795563',
 }
 
-async function fetch(url) {
-  try {
-    console.log(url)
-    const data = await axios({
-      url,
-      headers,
-    })
-    return data
-  } catch (error) {
-    console.log(`[retry] ${url}`)
-    return fetch(url)
-  }
-}
-
-/**
- * 动画
- *  - bangumi-data的条目id
- *  - https://bgm.tv/anime/browser/airtime/2021?page=1
- *  - https://bgm.tv/anime/browser/airtime/2020?page=1
- *  - https://bgm.tv/anime/browser?sort=rank&page=1
- *
- * 书籍
- *  - https://bgm.tv/book/browser?sort=rank&page=1
- *
- * 音乐
- *  - https://bgm.tv/music/browser?sort=rank&page=1
- *
- * 游戏
- *  - https://bgm.tv/game/browser?sort=rank&page=1
- *
- * 三次元
- *  - https://bgm.tv/real/browser?sort=rank&page=1
- */
 const pages = {
-  anime: 281,
-  book: 197,
-  music: 194,
-  game: 242,
-  real: 95,
+  anime: 288, // https://bgm.tv/anime/browser?sort=rank&page=1
+  book: 205, // https://bgm.tv/book/browser?sort=rank&page=1
+  music: 200, // https://bgm.tv/music/browser?sort=rank&page=1
+  game: 250, // https://bgm.tv/game/browser?sort=rank&page=1
+  real: 97, // https://bgm.tv/real/browser?sort=rank&page=1
 
-  2022: 12,
-  2021: 35,
-  2020: 36,
-  // book2021: 43,
-  // book2020: 259,
-  // music2021: 30,
-  // music2020: 106,
-  // game2021: 21,
-  // game2020: 67,
-  // real2021: 9,
-  // real2020: 30,
+  2022: 19, // https://bgm.tv/anime/browser/airtime/2022?page=1
+  2021: 37, // https://bgm.tv/anime/browser/airtime/2021?page=1
 }
 
 ;(async () => {
@@ -87,9 +45,7 @@ const pages = {
   // bangumi-data
   bangumiData.items.forEach((item) => {
     const find = item.sites.find((i) => i.site === 'bangumi')
-    if (find) {
-      data.push(parseInt(find.id))
-    }
+    if (find) data.push(parseInt(find.id))
   })
   write('./ids/anime-bangumi-data.json', data)
   data = []
@@ -112,16 +68,6 @@ const pages = {
     data.push(...cheerio.cheerioIds(indexHTML))
   }
   write('./ids/anime-2021.json', data)
-  data = []
-
-  // anime 2020
-  for (let page = 1; page <= pages[2020]; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/anime/browser/airtime/2020?page=${page}`
-    )
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/anime-2020.json', data)
   data = []
 
   // anime rank
@@ -223,4 +169,18 @@ function write(filePath, data) {
     filePath,
     JSON.stringify(Array.from(new Set(data)).sort((a, b) => a - b))
   )
+}
+
+async function fetch(url) {
+  try {
+    console.log(url)
+    const data = await axios({
+      url,
+      headers,
+    })
+    return data
+  } catch (error) {
+    console.log(`[retry] ${url}`)
+    return fetch(url)
+  }
 }
