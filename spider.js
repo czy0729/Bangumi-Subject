@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-04-13 09:52:27
+ * @Last Modified time: 2022-07-30 19:40:08
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -20,41 +20,40 @@ JSON.stringify({
 });
 */
 const headers = {
-  'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; __utmz=1.1644620219.525.11.utmcsr=github.com|utmccn=(referral)|utmcmd=referral|utmcct=/czy0729/Bangumi/issues/44; chii_sec_id=UVGn9FS2nsZvmh%2BcOIKnzyRBqIjLVCA2pU2Rmw; chii_sid=YPppqx; __utma=1.1636245540.1617210056.1649706597.1649795563.590; __utmc=1; __utmt=1; chii_auth=HFY6j7UYdzcgGBjmaXNObFYXA5L0%2BYckjtOTDoVnP3uj9RYl6itIBDe%2FrulZGOcpzYo0iUiiNnjvsCCRRi3iUgV0rqi3ZEta%2Fr39; __utmb=1.2.10.1649795563',
+    'chii_sid=3TrGHk; chii_sec_id=9gomstiyp7uzJ3cpu0hzjfv11uLjDbtooH7V%2B48; chii_cookietime=0; chii_auth=81R7t4%2Fio7ymJCAjuEh566eBobSCW5xM13Psv%2FHsAs7W1nphDN0ATRnXOXh%2B%2FyVeFiNSrFmXcculCjRBKQpZV3QwvqTTWtxAvKUV',
+  'User-Agent':
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 1659111456',
 }
 
 const accessToken = {
   token_type: 'Bearer',
-  access_token: 'b24fdce923341b82c8623878dd29809ab3de8c0d',
+  access_token: 'fa9d9524912eecd39b4a3f4c055c83f866f3d4c1',
 }
 
-const folder = '_data'
+const folder = 'data'
 const queue = 4
-const rewrite = false
+const rewrite = true
 
 /* ==================== 基本配置 ==================== */
 const host = 'bgm.tv'
 const startIndex = 0
 const ids = [
   ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
   // ...JSON.parse(fs.readFileSync('./ids/manga.json')),
   // ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
 ]
-
 
 /* ==================== 主要逻辑 ==================== */
 async function fetchSubject(id, index) {
@@ -145,13 +144,14 @@ async function fetchSubject(id, index) {
     }
 
     console.log(
-      `- ${exists ? 're' : ''}writing ${id}.json [${index} / ${ids.length}]`,
+      `- ${exists ? 're' : ''}writing ${filePath} [${index} / ${ids.length}]`,
       data.name
     )
     fs.writeFileSync(filePath, utils.decode(utils.safeStringify(data)))
 
     return true
   } catch (error) {
+    console.log(error)
     console.log(
       '\x1b[40m \x1b[31m[RETRY] ' +
         id +
@@ -188,6 +188,7 @@ async function request(url) {
       url: `${url}${url.includes('?') ? '&' : '?'}app_id=bgm8885c4d524cd61fc`,
       headers: {
         Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
+        'User-Agent': 'czy0729/Bangumi/1.0.0 NodeJs'
       },
     })
     return safe(data)
