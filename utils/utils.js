@@ -2,9 +2,10 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:18
  * @Last Modified by: czy0729
- * @Last Modified time: 2020-11-02 14:58:53
+ * @Last Modified time: 2022-10-14 13:26:26
  */
 const cheerioRN = require('cheerio-without-node-native')
+const cnChar = require('./simplebig/index')
 
 function safeObject(object = {}) {
   Object.keys(object).forEach((key) => {
@@ -108,5 +109,6 @@ module.exports = {
   getTimestamp,
   smallImage,
   sleep,
-  decode
+  decode,
+  t2s: cnChar.t2s
 }

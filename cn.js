@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-05-19 16:07:31
  * @Last Modified by: czy0729
- * @Last Modified time: 2021-10-23 03:05:44
+ * @Last Modified time: 2022-08-01 05:26:59
  */
 const fs = require('fs')
 const path = require('path')
@@ -34,7 +34,7 @@ filePaths.forEach((item) => {
       type,
     } = JSON.parse(fs.readFileSync(item))
     if (!info) return
-    if (!rating.total || rating.total < 500) return
+    if (!rating.total || !rating.rank || rating.total <= 50) return
 
     // if (type === 1 || type === 2 || type === 4) {
     if (type === 2) {
@@ -45,4 +45,12 @@ filePaths.forEach((item) => {
     }
   } catch (error) {}
 })
-fs.writeFileSync('./cn/mini.json', utils.safeStringify(cn))
+
+fs.writeFileSync('./cn/anime.json', utils.safeStringify(cn))
+
+const _cn = {}
+Object.keys(cn).forEach((id) => {
+  const key = cn[id].trim()
+  if (key.length >= 2) _cn[key] = parseInt(id)
+})
+fs.writeFileSync('./cn/_anime.json', utils.safeStringify(_cn))

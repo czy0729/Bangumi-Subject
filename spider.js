@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-07-30 19:40:08
+ * @Last Modified time: 2022-10-13 07:54:06
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -10,7 +10,7 @@ const path = require('path')
 const cheerio = require('./utils/cheerio')
 const utils = require('./utils/utils')
 
-axios.defaults.timeout = 3000
+axios.defaults.timeout = 8000
 
 /* ==================== 修改配置 ==================== */
 /*
@@ -20,15 +20,15 @@ JSON.stringify({
 });
 */
 const headers = {
-  Cookie:
-    'chii_sid=3TrGHk; chii_sec_id=9gomstiyp7uzJ3cpu0hzjfv11uLjDbtooH7V%2B48; chii_cookietime=0; chii_auth=81R7t4%2Fio7ymJCAjuEh566eBobSCW5xM13Psv%2FHsAs7W1nphDN0ATRnXOXh%2B%2FyVeFiNSrFmXcculCjRBKQpZV3QwvqTTWtxAvKUV',
   'User-Agent':
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 1659111456',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+  Cookie:
+    'chii_sec_id=UbWhSkzVgWMCEAMVkRyXrW04%2BPftIpKVVfG6965j; chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; prg_list_mode=full; chii_auth=l1mI5Oc2vusDOrl7NDAxTaZT84P%2Fz5Tjtu2o9p6OvNZeF9gxZYq8uQm48FQaFvln1wJdJCwD2qwAqeqSs0GnRqYul4wMcFuyT6BN; __utmz=1.1664700316.1964.29.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmc=1; __utma=1.825736922.1638495774.1665610855.1665614460.2062; chii_searchDateLine=0; chii_sid=n5x545; __utmt=1; __utmb=1.25.10.1665614460',
 }
 
 const accessToken = {
   token_type: 'Bearer',
-  access_token: 'fa9d9524912eecd39b4a3f4c055c83f866f3d4c1',
+  access_token: '69be1e1b1156ee612d0df61ebd0101b8b845f53b',
 }
 
 const folder = 'data'
@@ -39,11 +39,11 @@ const rewrite = true
 const host = 'bgm.tv'
 const startIndex = 0
 const ids = [
-  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
   // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
