@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2022-10-13 08:07:46
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-10-16 07:12:21
+ * @Last Modified time: 2022-10-16 11:12:04
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -20,9 +20,12 @@ const headers = {
 
 const __raw = './douban/raw.json'
 const __subject = (id) => `./data/${Math.floor(id / 100)}/${id}.json`
-const __search = (id) => `./douban/search/${Math.floor(id / 100)}/${id}.json`
+const __search = (id) => `./douban/suggest/${Math.floor(id / 100)}/${id}.json`
 const raw = read(__raw)
-const ids = read('./ids/real-rank.json') // './ids/anime-rank.json'
+
+const ids = [...read('./ids/anime-rank.json'), ...read('./ids/real-rank.json')]
+// const ids = [324629]
+const debug = ids.length <= 1
 
 ;(async () => {
   for (let i = 0; i <= ids.length; i += 1) {
@@ -43,7 +46,15 @@ const ids = read('./ids/real-rank.json') // './ids/anime-rank.json'
         fs.mkdirSync(dirPath)
       }
 
-      const { name_cn, name, date, info = '', staff = [] } = read(filePath)
+      let { name_cn, name, date, info = '', rating, staff = [] } = read(filePath)
+      if (!date) {
+        date =
+          (
+            info.match(
+              /<li><span>(发售日|放送开始|上映年度|上映时间|开始|发行日期|连载开始): <\/span>(.+?)<\/li>/
+            )?.[2] || ''
+          ).match(/(\d{4})/)?.[0] || ''
+      }
 
       let list = []
       if (fs.existsSync(searchFilePath)) {
@@ -82,6 +93,7 @@ const ids = read('./ids/real-rank.json') // './ids/anime-rank.json'
         id,
         name: name_cn || name,
         date,
+        rank: rating?.rank,
         ...result,
       }
       console.log(
@@ -171,7 +183,7 @@ async function search2(q, cat) {
 }
 
 function matchMovie(q, result, jp, date, director) {
-  const SIMILAR_RATE = 0.55
+  const SIMILAR_RATE = 0.49
   const _q = removeSpecial(q || jp).toUpperCase()
   let douban = {}
   let reason = ''
@@ -180,20 +192,29 @@ function matchMovie(q, result, jp, date, director) {
   result.forEach((item) => {
     if (douban.id) return
 
-    if (!matchYear(date, item.year)) {
-      reason = '年份不匹配'
+    const desc = removeSpecial(item.desc)
+    if (director && desc.includes(' / ') && !desc.includes(director)) {
+      reason = '导演不匹配'
       return
     }
 
     const title = removeSpecial(item.title)
-    const desc = removeSpecial(item.desc)
+    const s = similar(title, _q)
+    if (debug) console.log(title, _q, s)
+
+    if (!matchYear(date, item.year) && s <= 0.85) {
+      reason = '年份不匹配'
+      return
+    }
+
+    // // 动画
     // if (director && !desc.includes(director)) {
     //   reason = '导演不匹配'
     //   return
     // }
+    // director && desc.includes(director) &&
 
-    const s = similar(title, _q)
-    if (result.length <= 2 && director && desc.includes(director) && matchYear(date, item.year)) {
+    if (result.length <= 2 && matchYear(date, item.year)) {
       //
     } else {
       if (result.length === 1) {
@@ -204,7 +225,7 @@ function matchMovie(q, result, jp, date, director) {
           return
         }
       } else {
-        if (title.length >= 5 && _q.length >= 5 && s <= 0.7) {
+        if (title.length >= 5 && _q.length >= 5 && s <= SIMILAR_RATE) {
           reason = `结果为多，没有大部分包含，${s} | ${title} | ${_q}`
           return
         }
@@ -236,10 +257,21 @@ function matchMovie(q, result, jp, date, director) {
 
 function removeSpecial(str) {
   return String(str)
-    .replace(/ |(&amp;)|-|：|:|\/|《|》|（|）|“|”|，|。|！|？|之|第|卷|期|章|季|版|剧场|电影|\d{4}/g, '')
+    .replace(
+      / |(&amp;)|-|―|～|・|：|:|\/|《|》|（|）|「|」|#1|☆|“|”|，|。|！|？|之|了|的|第|卷|期|章|季|版|剧场|电影|\d{4}/g,
+      ''
+    )
     .replace('一', '1')
     .replace('二', '2')
     .replace('三', '3')
+    .replace('四', '4')
+    .replace('五', '5')
+    .replace('六', '6')
+    .replace('七', '7')
+    .replace('八', '8')
+    .replace('九', '9')
+    .replace('十', '10')
+    .replace(/天/g, '日')
 }
 
 function read(dir) {

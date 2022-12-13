@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-10-15 15:14:54
+ * @Last Modified time: 2022-10-19 12:59:38
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -22,14 +22,14 @@ JSON.stringify({
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
   Cookie:
-    'chii_sec_id=UbWhSkzVgWMCEAMVkRyXrW04%2BPftIpKVVfG6965j; chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; prg_list_mode=full; chii_auth=l1mI5Oc2vusDOrl7NDAxTaZT84P%2Fz5Tjtu2o9p6OvNZeF9gxZYq8uQm48FQaFvln1wJdJCwD2qwAqeqSs0GnRqYul4wMcFuyT6BN; __utmz=1.1664700316.1964.29.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmc=1; chii_searchDateLine=0; chii_sid=66odTX; __utma=1.825736922.1638495774.1665813674.1665817972.2092; __utmt=1; __utmb=1.1.10.1665817972',
+    'chii_sec_id=UbWhSkzVgWMCEAMVkRyXrW04%2BPftIpKVVfG6965j; chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; prg_list_mode=full; chii_auth=l1mI5Oc2vusDOrl7NDAxTaZT84P%2Fz5Tjtu2o9p6OvNZeF9gxZYq8uQm48FQaFvln1wJdJCwD2qwAqeqSs0GnRqYul4wMcFuyT6BN; __utmz=1.1664700316.1964.29.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_sid=FVDTTO; __utma=1.825736922.1638495774.1666148603.1666151998.2125; __utmc=1; __utmt=1; __utmb=1.8.10.1666151998',
 }
 
 const pages = {
   anime: 302, // https://bgm.tv/anime/browser?sort=rank&page=1
-  book: 218, // https://bgm.tv/book/browser?sort=rank&page=1
+  book: 225, // https://bgm.tv/book/browser?sort=rank&page=1
   music: 200, // https://bgm.tv/music/browser?sort=rank&page=1
   game: 259, // https://bgm.tv/game/browser?sort=rank&page=1
   real: 102, // https://bgm.tv/real/browser?sort=rank&page=1
@@ -80,15 +80,13 @@ const pages = {
   // write('./ids/anime-rank.json', data)
   // data = []
 
-  // // book rank
-  // for (let page = 1; page <= pages.book; page++) {
-  //   const { data: indexHTML } = await fetch(
-  //     `https://bgm.tv/book/browser?sort=rank&page=${page}`
-  //   )
-  //   data.push(...cheerio.cheerioIds(indexHTML))
-  // }
-  // write('./ids/book-rank.json', data)
-  // data = []
+  // book rank
+  for (let page = 1; page <= pages.book; page++) {
+    const { data: indexHTML } = await fetch(`https://bgm.tv/book/browser?sort=rank&page=${page}`)
+    data.push(...cheerio.cheerioIds(indexHTML))
+  }
+  write('./ids/book-rank.json', data)
+  data = []
 
   // // music rank
   // for (let page = 1; page <= pages.music; page++) {
@@ -109,14 +107,14 @@ const pages = {
   // data = []
 
   // real rank
-  for (let page = 1; page <= pages.real; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/real/browser?sort=rank&page=${page}`
-    )
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/real-rank.json', data)
-  data = []
+  // for (let page = 1; page <= pages.real; page++) {
+  //   const { data: indexHTML } = await fetch(
+  //     `https://bgm.tv/real/browser?sort=rank&page=${page}`
+  //   )
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/real-rank.json', data)
+  // data = []
 
   // // agefans
   // data = Object.keys(
