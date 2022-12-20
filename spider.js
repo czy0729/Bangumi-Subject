@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-10-13 07:54:06
+ * @Last Modified time: 2022-12-13 12:06:45
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,47 +13,43 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 8000
 
 /* ==================== 修改配置 ==================== */
-/*
-JSON.stringify({
+/* JSON.stringify({
   'User-Agent': navigator.userAgent,
   Cookie: document.cookie
-});
-*/
+}); */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
   Cookie:
-    'chii_sec_id=UbWhSkzVgWMCEAMVkRyXrW04%2BPftIpKVVfG6965j; chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; prg_display_mode=normal; prg_list_mode=full; chii_auth=l1mI5Oc2vusDOrl7NDAxTaZT84P%2Fz5Tjtu2o9p6OvNZeF9gxZYq8uQm48FQaFvln1wJdJCwD2qwAqeqSs0GnRqYul4wMcFuyT6BN; __utmz=1.1664700316.1964.29.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmc=1; __utma=1.825736922.1638495774.1665610855.1665614460.2062; chii_searchDateLine=0; chii_sid=n5x545; __utmt=1; __utmb=1.25.10.1665614460',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1668847891.2436.33.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; chii_auth=f2Mhbx5YywElNuPWx7IH6JOQPLKARggABB9a963p6jPQ%2F35F1ZWLM%2BNT0%2Bv6EBARGCFEFEV4Q0%2FwnoxgBFKaLqqmm12sYPaMxB%2FA; __utma=1.825736922.1638495774.1670896605.1670898719.2624; __utmc=1; chii_sid=yyD1ZM; __utmt=1; __utmb=1.4.10.1670898719',
 }
-
 const accessToken = {
   token_type: 'Bearer',
-  access_token: '69be1e1b1156ee612d0df61ebd0101b8b845f53b',
+  access_token: 'e3fbab004fc277abf9ed515db2669af93b30ef4a',
 }
 
 const folder = 'data'
 const queue = 4
-const rewrite = true
+const rewrite = false
 
 /* ==================== 基本配置 ==================== */
 const host = 'bgm.tv'
 const startIndex = 0
 const ids = [
-  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2021.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2020.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2023.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
   // ...JSON.parse(fs.readFileSync('./ids/manga.json')),
   // ...JSON.parse(fs.readFileSync('./ids/manga-series.json')),
-]
+].sort((a, b) => b - a)
 
 /* ==================== 主要逻辑 ==================== */
 async function fetchSubject(id, index) {
@@ -145,13 +141,14 @@ async function fetchSubject(id, index) {
 
     console.log(
       `- ${exists ? 're' : ''}writing ${filePath} [${index} / ${ids.length}]`,
-      data.name
+      data.name,
+      data.rating.rank,
+      data.rating.score
     )
     fs.writeFileSync(filePath, utils.decode(utils.safeStringify(data)))
 
     return true
   } catch (error) {
-    console.log(error)
     console.log(
       '\x1b[40m \x1b[31m[RETRY] ' +
         id +
@@ -161,7 +158,6 @@ async function fetchSubject(id, index) {
         ids.length +
         '] \x1b[0m'
     )
-    // return fetchSubject(id, index)
   }
 }
 
@@ -188,13 +184,12 @@ async function request(url) {
       url: `${url}${url.includes('?') ? '&' : '?'}app_id=bgm8885c4d524cd61fc`,
       headers: {
         Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
-        'User-Agent': 'czy0729/Bangumi/1.0.0 NodeJs'
+        'User-Agent': 'czy0729/Bangumi/1.1.0 NodeJs'
       },
     })
     return safe(data)
   } catch (ex) {
     console.log(ex)
-    // return request(url)
   }
 }
 

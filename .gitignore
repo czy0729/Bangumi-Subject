@@ -5,6 +5,7 @@ ApplePushServices.p12
 KEYSTORE.MD
 android/
 data-update/
+data1/
 bangumi.jks
 bangumi.mobileprovision
 dist/
