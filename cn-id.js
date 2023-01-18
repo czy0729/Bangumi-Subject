@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2021-10-23 03:17:36
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-08-02 15:31:48
+ * @Last Modified time: 2023-01-19 04:51:18
  */
 const fs = require('fs')
 const utils = require('./utils/utils')
@@ -219,12 +219,12 @@ const _data = {
 }
 
 Object.keys(data).forEach((id) => {
-  const cn = data[id].replace(/ova|剧场版/g, '').trim()
-  if (
-    cn.length >= 2 &&
-    !/！|？|：|、|～|・|《|〈|（|「|&|~|:|“|-|!|;|·|'|\*|\?|\+/.test(cn)
-  )
-    _data[cn] = parseInt(id)
+  const cn = data[id].replace(/ova|剧场版|第一季/g, '').trim()
+  if (cn.length >= 2 && cn.length <= 16) {
+    if (!/・|《|〈|（|「|&|~|:|\/|“|-|!|;|·|'|\*|\?|\+/.test(cn)) {
+      _data[cn.replace(/  /g, ' ')] = parseInt(id)
+    }
+  }
 })
 
 delete _data['人生']

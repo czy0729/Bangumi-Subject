@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-12-13 12:06:45
+ * @Last Modified time: 2023-01-19 00:49:25
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -19,31 +19,31 @@ axios.defaults.timeout = 8000
 }); */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1668847891.2436.33.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; chii_auth=f2Mhbx5YywElNuPWx7IH6JOQPLKARggABB9a963p6jPQ%2F35F1ZWLM%2BNT0%2Bv6EBARGCFEFEV4Q0%2FwnoxgBFKaLqqmm12sYPaMxB%2FA; __utma=1.825736922.1638495774.1670896605.1670898719.2624; __utmc=1; chii_sid=yyD1ZM; __utmt=1; __utmb=1.4.10.1670898719',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; __utmz=1.1672334900.2734.34.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_auth=vUkTUXUI0EfE00tnBMTD2VVmmAxqK0st92qpELe5vkkCHJtsHy0tQ2rxfK2WtnBTuXbSinvreNJ1eyVuX8WKXUSc%2B5SWyQtnYbRn; __utmc=1; __utma=1.825736922.1638495774.1674053325.1674058456.2924; __utmb=1.3.10.1674058456; chii_sid=QtSPJB',
 }
 const accessToken = {
   token_type: 'Bearer',
-  access_token: 'e3fbab004fc277abf9ed515db2669af93b30ef4a',
+  access_token: '4c6d68e83f8e42b80f30fbcf137c0baa8d3f2818',
 }
 
 const folder = 'data'
 const queue = 4
-const rewrite = false
+const rewrite = true
 
 /* ==================== 基本配置 ==================== */
 const host = 'bgm.tv'
 const startIndex = 0
 const ids = [
-  ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
   ...JSON.parse(fs.readFileSync('./ids/anime-2023.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
@@ -59,15 +59,9 @@ async function fetchSubject(id, index) {
     if (!rewrite && exists) return true
 
     const apiDS = await request(`https://api.bgm.tv/v0/subjects/${id}`)
-    const epsDS = await request(
-      `https://api.bgm.tv/v0/episodes?subject_id=${id}`
-    )
-    const crtDS = await request(
-      `https://api.bgm.tv/v0/subjects/${id}/characters`
-    )
-    const staffDS = await request(
-      `https://api.bgm.tv/v0/subjects/${id}/persons`
-    )
+    const epsDS = await request(`https://api.bgm.tv/v0/episodes?subject_id=${id}`)
+    const crtDS = await request(`https://api.bgm.tv/v0/subjects/${id}/characters`)
+    const staffDS = await request(`https://api.bgm.tv/v0/subjects/${id}/persons`)
     const { data: html } = await axios({
       url: `https://${host}/subject/${id}`,
       headers,
@@ -149,15 +143,7 @@ async function fetchSubject(id, index) {
 
     return true
   } catch (error) {
-    console.log(
-      '\x1b[40m \x1b[31m[RETRY] ' +
-        id +
-        '.json [' +
-        index +
-        ' / ' +
-        ids.length +
-        '] \x1b[0m'
-    )
+    console.log('\x1b[40m \x1b[31m[RETRY] ' + id + '.json [' + index + ' / ' + ids.length + '] \x1b[0m')
   }
 }
 
@@ -184,7 +170,7 @@ async function request(url) {
       url: `${url}${url.includes('?') ? '&' : '?'}app_id=bgm8885c4d524cd61fc`,
       headers: {
         Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
-        'User-Agent': 'czy0729/Bangumi/1.1.0 NodeJs'
+        'User-Agent': 'czy0729/Bangumi/1.1.0 NodeJs',
       },
     })
     return safe(data)

@@ -3,6 +3,7 @@
     "axios": "^0.19.1",
     "bangumi-data": "^0.3.105",
     "cheerio-without-node-native": "0.20.2",
+    "csvjson-csv2json": "^5.0.6",
     "jsonfile": "^6.1.0"
   }
 }

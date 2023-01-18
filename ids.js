@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-12-13 11:14:54
+ * @Last Modified time: 2023-01-19 00:29:42
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -28,15 +28,15 @@ const headers = {
 }
 
 const pages = {
-  anime: 306, // https://bgm.tv/anime/browser?sort=rank&page=1
-  book: 230, // https://bgm.tv/book/browser?sort=rank&page=1
-  music: 216, // https://bgm.tv/music/browser?sort=rank&page=1
-  game: 270, // https://bgm.tv/game/browser?sort=rank&page=1
-  real: 104, // https://bgm.tv/real/browser?sort=rank&page=1
+  // anime: 306, // https://bgm.tv/anime/browser?sort=rank&page=1
+  // book: 230, // https://bgm.tv/book/browser?sort=rank&page=1
+  // music: 216, // https://bgm.tv/music/browser?sort=rank&page=1
+  // game: 270, // https://bgm.tv/game/browser?sort=rank&page=1
+  // real: 104, // https://bgm.tv/real/browser?sort=rank&page=1
 
-  2023: 10,
-  2022: 39, // https://bgm.tv/anime/browser/airtime/2022?page=1
-  2021: 39, // https://bgm.tv/anime/browser/airtime/2021?page=1
+  2023: 13,
+  // 2022: 39, // https://bgm.tv/anime/browser/airtime/2022?page=1
+  // 2021: 39, // https://bgm.tv/anime/browser/airtime/2021?page=1
 }
 
 ;(async () => {
