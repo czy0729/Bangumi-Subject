@@ -3,7 +3,7 @@
  * @Author: czy0729
  * @Date: 2020-01-15 10:17:38
  * @Last Modified by: czy0729
- * @Last Modified time: 2023-01-19 00:29:42
+ * @Last Modified time: 2023-10-31 18:09:59
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -15,26 +15,25 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 3000
 
 /*
-JSON.stringify({
-  'User-Agent': navigator.userAgent,
-  Cookie: document.cookie
-});
+  JSON.stringify({
+    'User-Agent': navigator.userAgent,
+    Cookie: document.cookie
+  });
 */
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1668847891.2436.33.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; chii_auth=f2Mhbx5YywElNuPWx7IH6JOQPLKARggABB9a963p6jPQ%2F35F1ZWLM%2BNT0%2Bv6EBARGCFEFEV4Q0%2FwnoxgBFKaLqqmm12sYPaMxB%2FA; __utma=1.825736922.1638495774.1670896605.1670898719.2624; __utmc=1; chii_sid=yyD1ZM; __utmt=1; __utmb=1.4.10.1670898719',
+    '_ga=GA1.1.2037657089.1675671081; prg_list_mode=full; 2592000; chii_sec_id=zrBpW0j9%2FooIhKrPSOelBNSRRgVU9C0VfT0ssw4; chii_cookietime=2592000; chii_theme_choose=1; chii_theme=dark; _ga_1109JLGMHN=deleted; prg_display_mode=normal; chii_auth=FtYek6s8j%2FgmQZyD7QjbwBhe6nSwO1a%2BGnf8XivuU95ueOgAAKcyPKIVUMSkBze0vrqFp22HMoqCnAVyxD8zTleOXsbYbzrnybql; __utmc=1; chii_searchDateLine=0; __utmz=1.1698727868.5237.60.utmcsr=192.168.31.87:6006|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_sid=060omO; __utma=1.825736922.1638495774.1698736511.1698746823.5239; __utmt=1; __utmb=1.38.10.1698746823; _ga_1109JLGMHN=GS1.1.1698746822.2134.1.1698746953.0.0.0',
 }
 
 const pages = {
-  // anime: 306, // https://bgm.tv/anime/browser?sort=rank&page=1
-  // book: 230, // https://bgm.tv/book/browser?sort=rank&page=1
-  // music: 216, // https://bgm.tv/music/browser?sort=rank&page=1
-  // game: 270, // https://bgm.tv/game/browser?sort=rank&page=1
-  // real: 104, // https://bgm.tv/real/browser?sort=rank&page=1
-
-  2023: 13,
+  anime: 335, // https://bgm.tv/anime/browser?sort=rank&page=1
+  book: 273, // https://bgm.tv/book/browser?sort=rank&page=1
+  music: 239, // https://bgm.tv/music/browser?sort=rank&page=1
+  game: 308, // https://bgm.tv/game/browser?sort=rank&page=1
+  real: 115, // https://bgm.tv/real/browser?sort=rank&page=1
+  // 2023: 13, // https://bgm.tv/anime/browser/airtime/2023?page=1
   // 2022: 39, // https://bgm.tv/anime/browser/airtime/2022?page=1
   // 2021: 39, // https://bgm.tv/anime/browser/airtime/2021?page=1
 }
@@ -43,43 +42,31 @@ const pages = {
   let filePath
   let data = []
 
-  // bangumi-data
-  bangumiData.items.forEach((item) => {
-    const find = item.sites.find((i) => i.site === 'bangumi')
-    if (find) data.push(parseInt(find.id))
-  })
-  write('./ids/anime-bangumi-data.json', data)
-  data = []
+  // // bangumi-data
+  // bangumiData.items.forEach((item) => {
+  //   const find = item.sites.find((i) => i.site === 'bangumi')
+  //   if (find) data.push(parseInt(find.id))
+  // })
+  // write('./ids/anime-bangumi-data.json', data)
+  // data = []
 
-  // anime 2022
-  for (let page = 1; page <= pages[2023]; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/anime/browser/airtime/2023?page=${page}`
-    )
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/anime-2023.json', data)
-  data = []
-
-  // anime 2022
-  for (let page = 1; page <= pages[2022]; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/anime/browser/airtime/2022?page=${page}`
-    )
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/anime-2022.json', data)
-  data = []
+  // // anime 2023
+  // for (let page = 1; page <= pages[2023]; page++) {
+  //   const { data: indexHTML } = await fetch(
+  //     `https://bgm.tv/anime/browser/airtime/2023?page=${page}`
+  //   )
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/anime-2023.json', data)
+  // data = []
 
   // anime rank
-  for (let page = 1; page <= pages.anime; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/anime/browser?sort=rank&page=${page}`
-    )
-    data.push(...cheerio.cheerioIds(indexHTML))
-  }
-  write('./ids/anime-rank.json', data)
-  data = []
+  // for (let page = 1; page <= pages.anime; page++) {
+  //   const { data: indexHTML } = await fetch(`https://bgm.tv/anime/browser?sort=rank&page=${page}`)
+  //   data.push(...cheerio.cheerioIds(indexHTML))
+  // }
+  // write('./ids/anime-rank.json', data)
+  // data = []
 
   // book rank
   for (let page = 1; page <= pages.book; page++) {
@@ -91,9 +78,7 @@ const pages = {
 
   // music rank
   for (let page = 1; page <= pages.music; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/music/browser?sort=rank&page=${page}`
-    )
+    const { data: indexHTML } = await fetch(`https://bgm.tv/music/browser?sort=rank&page=${page}`)
     data.push(...cheerio.cheerioIds(indexHTML))
   }
   write('./ids/music-rank.json', data)
@@ -109,9 +94,7 @@ const pages = {
 
   // real rank
   for (let page = 1; page <= pages.real; page++) {
-    const { data: indexHTML } = await fetch(
-      `https://bgm.tv/real/browser?sort=rank&page=${page}`
-    )
+    const { data: indexHTML } = await fetch(`https://bgm.tv/real/browser?sort=rank&page=${page}`)
     data.push(...cheerio.cheerioIds(indexHTML))
   }
   write('./ids/real-rank.json', data)

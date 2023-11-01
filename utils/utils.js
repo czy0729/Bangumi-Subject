@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 19:30:18
  * @Last Modified by: czy0729
- * @Last Modified time: 2022-10-14 13:26:26
+ * @Last Modified time: 2023-11-01 05:07:44
  */
 const cheerioRN = require('cheerio-without-node-native')
 const cnChar = require('./simplebig/index')
@@ -54,10 +54,10 @@ async function queue(fetchs, num = 2) {
   }
 
   await Promise.all(
-    new Array(num).fill(0).map(async () => {
+    new Array(num).fill(0).map(async (item, index) => {
       while (fetchs.length) {
         // eslint-disable-next-line no-await-in-loop
-        await fetchs.shift()()
+        await fetchs.shift()(index)
       }
     })
   )
@@ -110,5 +110,5 @@ module.exports = {
   smallImage,
   sleep,
   decode,
-  t2s: cnChar.t2s
+  t2s: cnChar.t2s,
 }

@@ -2,7 +2,7 @@
  * @Author: czy0729
  * @Date: 2020-01-14 18:51:27
  * @Last Modified by: czy0729
- * @Last Modified time: 2023-01-19 00:49:25
+ * @Last Modified time: 2023-11-01 10:53:27
  */
 const axios = require('axios')
 const fs = require('fs')
@@ -13,19 +13,21 @@ const utils = require('./utils/utils')
 axios.defaults.timeout = 8000
 
 /* ==================== 修改配置 ==================== */
-/* JSON.stringify({
-  'User-Agent': navigator.userAgent,
-  Cookie: document.cookie
-}); */
+/*
+  JSON.stringify({
+    'User-Agent': navigator.userAgent,
+    Cookie: document.cookie
+  });
+*/
 const headers = {
   'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
   Cookie:
-    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; __utmz=1.1672334900.2734.34.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_auth=vUkTUXUI0EfE00tnBMTD2VVmmAxqK0st92qpELe5vkkCHJtsHy0tQ2rxfK2WtnBTuXbSinvreNJ1eyVuX8WKXUSc%2B5SWyQtnYbRn; __utmc=1; __utma=1.825736922.1638495774.1674053325.1674058456.2924; __utmb=1.3.10.1674058456; chii_sid=QtSPJB',
+    'chii_cookietime=2592000; chii_theme_choose=1; prg_list_mode=full; prg_display_mode=normal; __utmz=1.1668847891.2436.33.utmcsr=tongji.baidu.com|utmccn=(referral)|utmcmd=referral|utmcct=/; chii_theme=dark; chii_sec_id=8UldYJdl7G0GMY1%2FZKcdnBtEIqLM0JqD7R7GLw; chii_auth=f2Mhbx5YywElNuPWx7IH6JOQPLKARggABB9a963p6jPQ%2F35F1ZWLM%2BNT0%2Bv6EBARGCFEFEV4Q0%2FwnoxgBFKaLqqmm12sYPaMxB%2FA; __utma=1.825736922.1638495774.1670896605.1670898719.2624; __utmc=1; chii_sid=yyD1ZM; __utmt=1; __utmb=1.4.10.1670898719',
 }
 const accessToken = {
   token_type: 'Bearer',
-  access_token: '4c6d68e83f8e42b80f30fbcf137c0baa8d3f2818',
+  access_token: '949fa55d4922aeed686a0ba07560364fa8869e91',
 }
 
 const folder = 'data'
@@ -37,13 +39,12 @@ const host = 'bgm.tv'
 const startIndex = 0
 const ids = [
   // ...JSON.parse(fs.readFileSync('./ids/anime-bangumi-data.json')),
-  ...JSON.parse(fs.readFileSync('./ids/anime-2023.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-2022.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
-  // ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
+  // ...JSON.parse(fs.readFileSync('./ids/anime-2023.json')),
+  ...JSON.parse(fs.readFileSync('./ids/anime-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/book-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/game-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/music-rank.json')),
+  ...JSON.parse(fs.readFileSync('./ids/real-rank.json')),
   // ...JSON.parse(fs.readFileSync('./ids/agefans.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8.json')),
   // ...JSON.parse(fs.readFileSync('./ids/wk8-series.json')),
@@ -52,11 +53,19 @@ const ids = [
 ].sort((a, b) => b - a)
 
 /* ==================== 主要逻辑 ==================== */
-async function fetchSubject(id, index) {
+async function fetchSubject(id, index, idx) {
   try {
     const filePath = `./${folder}/${Math.floor(id / 100)}/${id}.json`
     const exists = fs.existsSync(filePath)
     if (!rewrite && exists) return true
+
+    let parseFlag = false
+    try {
+      JSON.parse(fs.readFileSync(filePath))
+    } catch (ex) {
+      parseFlag = true
+    }
+    if (!parseFlag) return true
 
     const apiDS = await request(`https://api.bgm.tv/v0/subjects/${id}`)
     const epsDS = await request(`https://api.bgm.tv/v0/episodes?subject_id=${id}`)
@@ -134,12 +143,15 @@ async function fetchSubject(id, index) {
     }
 
     console.log(
-      `- ${exists ? 're' : ''}writing ${filePath} [${index} / ${ids.length}]`,
+      `[${idx}]`,
+      `${exists ? 're' : ''}writing ${filePath} [${index} / ${ids.length}]`,
       data.name,
       data.rating.rank,
       data.rating.score
     )
-    fs.writeFileSync(filePath, utils.decode(utils.safeStringify(data)))
+
+    // utils.decode(utils.safeStringify(data))
+    fs.writeFileSync(filePath, utils.safeStringify(data))
 
     return true
   } catch (error) {
@@ -147,9 +159,9 @@ async function fetchSubject(id, index) {
   }
 }
 
-const fetchs = ids.map((id, index) => () => {
+const fetchs = ids.map((id, index) => (idx) => {
   if (index < startIndex) return true
-  return fetchSubject(id, index)
+  return fetchSubject(id, index, idx)
 })
 utils.queue(fetchs, queue)
 
@@ -175,7 +187,8 @@ async function request(url) {
     })
     return safe(data)
   } catch (ex) {
-    console.log(ex)
+    console.log('[retry]:', url)
+    return request(url)
   }
 }
 
